@@ -1,0 +1,17 @@
+[alias]
+  co = checkout
+  ci = commit
+  st = status
+  br = branch
+  hist = log --pretty=format:\"%h %s%d\" --graph --date=short
+  #hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+  type = cat-file -t
+  dump = cat-file -p
+	ac = !git add -A && git commit
+[user]
+	name = Random4405
+	email = random4405@gmail.com
+[core]
+	autocrlf = false
+	safecrlf = true
+	fileMode = false

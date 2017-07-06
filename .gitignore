@@ -1,0 +1,14 @@
+.Xauthority
+.Xresources
+.bash_aliases
+.bash_logout
+.bash_profile
+.bashrc
+.dmrc
+.fehbg
+.profile
+.vimrc
+.vimrc.new
+.xinitrc
+.xsession
+.zshrc

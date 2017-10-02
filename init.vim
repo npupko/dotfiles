@@ -16,18 +16,29 @@ set conceallevel=0 " Don't hide quotes in json
 set showtabline=2
 set laststatus=2
 set mouse=a
-" set relativenumber
-" autocmd InsertEnter * :set number
-" autocmd InsertLeave * :set relativenumber
+set relativenumber
 set nocursorcolumn
 set nocursorline
-set norelativenumber
-" syntax sync minlines=256
-set lazyredraw     "Test for speed
-set ttyfast        "Faster terminal
-set timeoutlen=1000 ttimeoutlen=0 "Fix lightline
-set hidden
+set relativenumber
+" set colorcolumn=81
+augroup ruby
+    au!
+    autocmd FileType ruby set colorcolumn=81
+augroup END
 
+augroup cc
+    au!
+    autocmd FileType c,cpp set colorcolumn=110
+augroup END
+" decreasing updatetime
+set updatetime=250
+" syntax sync minlines=256
+" set lazyredraw     "Test for speed
+" set ttyfast        "Faster terminal
+set timeoutlen=1000 ttimeoutlen=0 "Fix lightline
+set nohidden
+
+let g:python3_host_prog = '/usr/local/bin/python3'
 " set clipboard+=unnamedplus
 
 "turn on syntax highlighting
@@ -39,28 +50,49 @@ syntax on
 " the plugins.
 let mapleader=","
 
+" ============== Themes config =====================
 set termguicolors
 " set t_Co=256
 " let g:gruvbox_contrast_dark = 'hard'
 " let g:gruvbox_contrast_light = 'soft'
-" let g:gruvbox_italic = 1
+let g:gruvbox_italic = 1
 set background=dark
 colorscheme gruvbox
 " colorscheme tender
 
+" ================ Font config ================
+set guifont=Iosevka\ Term:h12
 " ================ Statusline config ================
 "
 " set statusline=%F%m%r%h%w\ [%l/%L,\ %v]\ [%p%%]\ %=[TYPE=%Y]\ [FMT=%{&ff}]\ %{\"[ENC=\".(&fenc==\"\"?&enc:&fenc).\"]\"}
 "
+"Another status line
+" set laststatus=2
+" set statusline=
+" set statusline+=%-3.3n\                      " buffer number
+" set statusline+=%f\                          " filename
+" set statusline+=%h%m%r%w                     " status flags
+" set statusline+=\[%{strlen(&ft)?&ft:'none'}] " file type
+" set statusline+=%=                           " right align remainder
+" set statusline+=0x%-8B                       " character value
+" set statusline+=%-14(%l,%c%V%)               " line, character
+" set statusline+=%<%P                         " file position
+"
+" ================ Vim remote ==============
+"
+if has('nvim')
+  let $VISUAL = 'nvr -cc split --remote-wait'
+endif
+"
 " ================ Turn Off Swap Files ==============
 
-" set noswapfile
-" set nobackup
-" set nowb
+set noswapfile
+set nobackup
+set nowb
 
-set backup                     " Enable creation of backup file.
-set backupdir=~/.vim/backups   " Where backups will go.
-set directory=~/.vim/tmp       " Where temporary files will go.
+" set backup                     " Enable creation of backup file.
+" set backupdir=~/.vim/backups   " Where backups will go.
+" set directory=~/.vim/tmp       " Where temporary files will go.
 
 " ================ Persistent Undo ==================
 " Keep undo history across sessions, by storing in file.
@@ -89,17 +121,17 @@ filetype plugin on
 filetype indent on
 " Display tabs and trailing spaces visually
 set list listchars=tab:\ \ ,trail:·
-
+" set list listchars=tab:>-,trail:.,extends:>
 set wrap       "Don't wrap lines
 set linebreak    "Wrap lines at convenient points
 
 " Enable russian lang
-set keymap=russian-jcukenwin
+" set keymap=russian-jcukenwin
 set iminsert=0
 set imsearch=0
-highlight lCursor guifg=NONE guibg=Red
+" highlight lCursor guifg=NONE guibg=Red
 
-set langmap=ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNOPQRSTUVWXYZ,фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz
+" set langmap=ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNOPQRSTUVWXYZ,фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz
 
 " ## Edit .vimrc ##
 map <leader>v :vsp $MYVIMRC<CR>
@@ -114,16 +146,16 @@ set nofoldenable        "dont fold by default
 "
 " set wildmode=list:longest
 set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
-" set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
-" set wildignore+=*vim/backups*
-" set wildignore+=*sass-cache*
-" set wildignore+=*DS_Store*
-" set wildignore+=vendor/rails/**
-" set wildignore+=vendor/cache/**
-" set wildignore+=*.gem
-" set wildignore+=log/**
-" set wildignore+=tmp/**
-" set wildignore+=*.png,*.jpg,*.gif
+set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
+set wildignore+=*vim/backups*
+set wildignore+=*sass-cache*
+set wildignore+=*DS_Store*
+set wildignore+=vendor/rails/**
+set wildignore+=vendor/cache/**
+set wildignore+=*.gem
+set wildignore+=log/**
+set wildignore+=tmp/**
+set wildignore+=*.png,*.jpg,*.gif
 
 " ================ Scrolling ========================
 "
@@ -138,54 +170,55 @@ set hlsearch        " Highlight searches by default
 set ignorecase      " Ignore case when searching...
 set smartcase       " ...unless we type a capital
 
-" Status line
-" set laststatus=2
-" set statusline=
-" set statusline+=%-3.3n\                      " buffer number
-" set statusline+=%f\                          " filename
-" set statusline+=%h%m%r%w                     " status flags
-" set statusline+=\[%{strlen(&ft)?&ft:'none'}] " file type
-" set statusline+=%=                           " right align remainder
-" set statusline+=0x%-8B                       " character value
-" set statusline+=%-14(%l,%c%V%)               " line, character
-" set statusline+=%<%P                         " file position
-
 " ================ Other settings ===================
 call plug#begin()
 
-  " Plug 'hail2u/vim-css3-syntax'         " Slim support
-  " Plug 'arakashic/chromatica.nvim'
-  " Plug 'vim-syntastic/syntastic'
+  Plug 'ngmy/vim-rubocop'
   Plug 'vim-ruby/vim-ruby'
-  Plug 'tpope/vim-rails'
   Plug 'cakebaker/scss-syntax.vim'
-  Plug 'tpope/vim-haml'
   Plug 'Yggdroot/indentLine'            " Indent Guides
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
   Plug 'mattn/emmet-vim'                " Emmet support
+  Plug 'tpope/vim-rails'
+  Plug 'tpope/vim-haml'
   Plug 'tpope/vim-surround'             " Quotes and tags edit LEARN!
   Plug 'tpope/vim-commentary'
   Plug 'tpope/vim-repeat'
-  Plug 'matchit.zip'
+  Plug 'tpope/vim-fugitive'
+  Plug 'vim-scripts/matchit.zip'
   Plug 'Raimondi/delimitMate'
     let delimitMate_expand_cr = 1
   Plug 'kien/ctrlp.vim'
   Plug 'scrooloose/nerdtree'
   Plug 'gregsexton/MatchTag'
   Plug 'jacoborus/tender.vim'
-  Plug 'tpope/vim-fugitive'
-
-  " Plug 'MarcWeber/vim-addon-mw-utils'
-  " Plug 'tomtom/tlib_vim'
-  " Plug 'garbas/vim-snipmate'
-  " Plug 'honza/vim-snippets'
-
+  Plug 'jistr/vim-nerdtree-tabs'
+  Plug 'keith/rspec.vim'
   Plug 'tpope/vim-endwise'
-
+  Plug 'arithran/vim-delete-hidden-buffers'
+  Plug 'godlygeek/tabular'
+  Plug 'plasticboy/vim-markdown'
+    let g:vim_markdown_conceal = 0
+  " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  " Plug 'fishbullet/deoplete-ruby'
+  Plug 'djoshea/vim-autoread'
+  Plug 'jgdavey/vim-blockle'
+  Plug 'saadmir/tagbar'
+  Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; python2 generate.py' }
+  Plug 'altercation/vim-colors-solarized'
+  " Plug 'christoomey/vim-tmux-navigator'
+  " Plug 'chase/vim-ansible-yaml'
 
 " Commented plugins
-
+" Plug 'hail2u/vim-css3-syntax'         " Slim support
+" Plug 'arakashic/chromatica.nvim'
+" Plug 'vim-syntastic/syntastic'
+" Plug 'flomotlik/vim-livereload'
+" Plug 'MarcWeber/vim-addon-mw-utils'
+" Plug 'tomtom/tlib_vim'
+" Plug 'garbas/vim-snipmate'
+" Plug 'honza/vim-snippets'
 " Plug 'jiangmiao/auto-pairs'
 " Plug 'mxw/vim-jsx'
 "   let g:jsx_ext_required = 0
@@ -213,8 +246,30 @@ call plug#begin()
 
 call plug#end()
 
+" ========== Tagbar configuration ========
+let g:tagbar_type_ruby = {
+    \ 'kinds' : [
+        \ 'm:modules',
+        \ 'c:classes',
+        \ 'd:describes',
+        \ 'C:contexts',
+        \ 'f:methods',
+        \ 'F:singleton methods'
+    \ ]
+\ }
+let g:tagbar_type_css = {
+\ 'ctagstype' : 'Css',
+    \ 'kinds'     : [
+        \ 'c:classes',
+        \ 's:selectors',
+        \ 'i:identities'
+    \ ]
+\ }
+nmap <F8> :TagbarToggle<CR>
+" ============= Omnicomplete =============
 " let g:neocomplete#enable_at_startup = 1
-" =============Indent Guides ================
+" let g:deoplete#enable_at_startup = 1
+" ============= Indent Guides ================
 
 let g:indentLine_enabled = 1
 let g:indentLine_char= '┆'
@@ -251,8 +306,8 @@ let g:airline#extensions#tabline#left_alt_sep = ''
 
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif "Выход с одной q
 
-map <leader><leader> :NERDTreeToggle<CR>
-nmap <leader>m :NERDTreeFind<CR>
+map <leader><leader> :NERDTreeTabsToggle<CR>
+nmap <leader>m :NERDTreeTabsFind<CR>
 
 "
 " ================= Keymaps ================
@@ -264,16 +319,19 @@ nmap <leader>m :NERDTreeFind<CR>
 
 "Save SUDO files
 " cnoremap sudow w !sudo tee % >/dev/null
-cnoremap sudow w !sudo tee % >/dev/null
+" cnoremap sudow w !sudo tee % >/dev/null
+noremap <Leader>w :w !sudo tee % >/dev/null<CR>
 
 " Allow to copy/paste between VIM instances
-" "copy the current visual selection to ~/.vbuf
+" copy the current visual selection to ~/.vbuf
 vmap <Leader>y :w! ~/.vbuf<CR>
-" "copy the current line to the buffer file if no visual selection
+" copy the current line to the buffer file if no visual selection
 nmap <Leader>y :.w! ~/.vbuf<CR>
-" "paste the contents of the buffer file
+" paste the contents of the buffer file
 nmap <Leader>p :r ~/.vbuf<CR>
 
+" Clear hidden buffers
+map <leader>d :DeleteHiddenBuffers<CR>
 
 " Map ctrl-movement keys to window switching
 map <C-k> <C-w><Up>
@@ -283,7 +341,7 @@ map <C-h> <C-w><Left>
 nnoremap <silent> <bs> <C-w><Left>
 
 " Save with leaderkey
-noremap <Leader>w :update<CR>
+" noremap <Leader>w :update<CR>
 
 
 " format the entire file
@@ -292,7 +350,7 @@ nnoremap <leader>fef :normal! gg=G``<CR>
 
 
 " create <%= foo %> erb tags using Ctrl-k in edit mode
-imap <silent> <C-K> <%=   %><Esc>3hi
+imap <silent> <C-K> <%=  %><Esc>2hi
 
 " create <% foo %> erb tags using Ctrl-j in edit mode
 imap <silent> <C-J> <%  %><Esc>2hi
@@ -310,6 +368,12 @@ nmap <silent> ,vr :so ~/.vimrc<CR>
 " upper/lower word
 nmap <leader>u mQviwU`Q
 nmap <leader>l mQviwu`Q
+
+" set ansible filetype
+nmap <leader>a :set ft=ansible<CR>
+
+" Emmet tab comletition
+" imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
 
 " let g:syntastic_scss_checkers = ['scss_lint']
 " let g:syntastic_check_on_open = 1

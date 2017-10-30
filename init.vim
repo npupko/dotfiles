@@ -159,7 +159,11 @@ set wildignore+=*.png,*.jpg,*.gif
 
 " ================ Scrolling ========================
 "
-set scrolloff=8         "Start scrolling when we're 8 lines away from margins
+" set scrolloff=8         "Start scrolling when we're 8 lines away from margins
+" set sidescrolloff=15
+" set sidescroll=1
+
+" set scrolloff=8         "Start scrolling when we're 8 lines away from margins
 set sidescrolloff=15
 set sidescroll=1
 
@@ -209,6 +213,9 @@ call plug#begin()
   Plug 'tpope/vim-endwise'
   Plug 'tpope/vim-sensible'
   " Plug 'sheerun/vim-polyglot'
+  Plug 'takac/vim-hardtime'
+    let g:hardtime_default_on = 1
+    let g:hardtime_allow_different_key = 1
   Plug 'w0rp/ale' " Auto rubocop after save
   Plug 'qpkorr/vim-bufkill' " Close buffer :BW
   

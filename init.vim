@@ -53,7 +53,7 @@ let mapleader=","
 " ============== Themes config =====================
 set termguicolors
 " set t_Co=256
-" let g:gruvbox_contrast_dark = 'hard'
+let g:gruvbox_contrast_dark = 'medium'
 " let g:gruvbox_contrast_light = 'soft'
 let g:gruvbox_italic = 1
 set background=dark
@@ -122,7 +122,7 @@ filetype indent on
 " Display tabs and trailing spaces visually
 set list listchars=tab:\ \ ,trail:·
 " set list listchars=tab:>-,trail:.,extends:>
-set wrap       "Don't wrap lines
+set nowrap       "Don't wrap lines
 set linebreak    "Wrap lines at convenient points
 
 " Enable russian lang
@@ -174,41 +174,46 @@ set smartcase       " ...unless we type a capital
 call plug#begin()
 
   Plug 'ngmy/vim-rubocop'
-  Plug 'vim-ruby/vim-ruby'
-  Plug 'cakebaker/scss-syntax.vim'
+  " Plug 'vim-ruby/vim-ruby'
+  " Plug 'cakebaker/scss-syntax.vim'
   Plug 'Yggdroot/indentLine'            " Indent Guides
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
   Plug 'mattn/emmet-vim'                " Emmet support
+  Plug 'vim-scripts/matchit.zip'
+  Plug 'Raimondi/delimitMate'
+    let delimitMate_expand_cr = 1
+  " Plug 'kien/ctrlp.vim'
+  Plug 'scrooloose/nerdtree'
+  Plug 'gregsexton/MatchTag'
+  Plug 'jacoborus/tender.vim'
+  Plug 'jistr/vim-nerdtree-tabs'
+  Plug 'keith/rspec.vim'
+  Plug 'arithran/vim-delete-hidden-buffers'
+  Plug 'godlygeek/tabular'
+  Plug 'plasticboy/vim-markdown'
+    let g:vim_markdown_conceal = 0
+  Plug 'djoshea/vim-autoread'
+  Plug 'jgdavey/vim-blockle'
+  Plug 'saadmir/tagbar'
+  Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; python2 generate.py' }
+  Plug 'kchmck/vim-coffee-script'
+  Plug 'kshenoy/vim-signature'
+  Plug 'craigemery/vim-autotag'
   Plug 'tpope/vim-rails'
   Plug 'tpope/vim-haml'
   Plug 'tpope/vim-surround'             " Quotes and tags edit LEARN!
   Plug 'tpope/vim-commentary'
   Plug 'tpope/vim-repeat'
   Plug 'tpope/vim-fugitive'
-  Plug 'vim-scripts/matchit.zip'
-  Plug 'Raimondi/delimitMate'
-    let delimitMate_expand_cr = 1
-  Plug 'kien/ctrlp.vim'
-  Plug 'scrooloose/nerdtree'
-  Plug 'gregsexton/MatchTag'
-  Plug 'jacoborus/tender.vim'
-  Plug 'jistr/vim-nerdtree-tabs'
-  Plug 'keith/rspec.vim'
   Plug 'tpope/vim-endwise'
-  Plug 'arithran/vim-delete-hidden-buffers'
-  Plug 'godlygeek/tabular'
-  Plug 'plasticboy/vim-markdown'
-    let g:vim_markdown_conceal = 0
-  " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  " Plug 'fishbullet/deoplete-ruby'
-  Plug 'djoshea/vim-autoread'
-  Plug 'jgdavey/vim-blockle'
-  Plug 'saadmir/tagbar'
-  Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; python2 generate.py' }
-  Plug 'altercation/vim-colors-solarized'
-  " Plug 'christoomey/vim-tmux-navigator'
-  " Plug 'chase/vim-ansible-yaml'
+  Plug 'tpope/vim-sensible'
+  " Plug 'sheerun/vim-polyglot'
+  Plug 'w0rp/ale' " Auto rubocop after save
+  Plug 'qpkorr/vim-bufkill' " Close buffer :BW
+  
+  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } "Fuzzy finder
+  Plug 'junegunn/fzf.vim'
 
 " Commented plugins
 " Plug 'hail2u/vim-css3-syntax'         " Slim support
@@ -294,6 +299,29 @@ let g:airline#extensions#tagbar#enabled = 0
 let g:airline#extensions#tabline#show_tab_nr = 1
 let g:airline#extensions#tabline#tab_nr_type = 1
 let g:airline#extensions#tabline#left_alt_sep = ''
+"
+"=============== FZF Config ================
+"
+set rtp+=/usr/local/opt/fzf
+map <C-p> :FZF<cr>
+nmap ; :Buffers<CR>
+" nmap <Leader>t :Files<CR>
+nmap <Leader>r :Tags<CR>
+"
+"=============== Ale Config ================
+"
+let g:airline#extensions#ale#enabled = 1
+" Write this in your vimrc file
+let g:ale_lint_on_text_changed = 'never'
+" You can disable this option too
+" if you don't want linters to run on opening a file
+let g:ale_lint_on_enter = 0
+" let g:ale_sign_error = '•'
+let g:ale_sign_error = 'E'
+let g:ale_sign_warning = 'W'
+
+hi link ALEErrorSign    GruvboxRed
+hi link ALEWarningSign  GruvboxYellow
 "
 "=============== Autoformat ================
 

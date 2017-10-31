@@ -1,3 +1,6 @@
+" vim/neovim config used by Nikita Pupko
+" Author: Nikita Pupko
+" http://github.com/Random4405/dotfiles
 " ================ General Config ====================
 set nocompatible
 set number                     " Line numbers are good

@@ -1,7 +1,7 @@
 " vim/neovim config used by Nikita Pupko
 " Author: Nikita Pupko
 " http://github.com/Random4405/dotfiles
-" ================ General Config ====================
+" General Config {{{
 set nocompatible
 set number                     " Line numbers are good
 set backspace=indent,eol,start " Allow backspace in insert mode
@@ -34,21 +34,8 @@ syntax on
 
 " Change leader to a comma because the backslash is too far away
 let mapleader=","
-
-" ============== Themes config =====================
-set termguicolors
-" set t_Co=256
-let g:gruvbox_contrast_dark = 'medium'
-let g:gruvbox_italic = 1
-set background=dark
-colorscheme gruvbox
-" colorscheme tender
-
-" ================ Font config ================
-
-set guifont=Iosevka\ Term:h12
-
-" ================ Statusline config ================
+"}}}
+" Statusline config {{{
 "
 " set statusline=%F%m%r%h%w\ [%l/%L,\ %v]\ [%p%%]\ %=[TYPE=%Y]\ [FMT=%{&ff}]\ %{\"[ENC=\".(&fenc==\"\"?&enc:&fenc).\"]\"}
 "
@@ -64,7 +51,24 @@ set guifont=Iosevka\ Term:h12
 " set statusline+=%-14(%l,%c%V%)               " line, character
 " set statusline+=%<%P                         " file position
 "
-" ================ Turn Off Swap Files ==============
+" }}}
+" Themes config {{{
+set termguicolors
+" set t_Co=256
+let g:gruvbox_contrast_dark = 'medium'
+let g:gruvbox_italic = 1
+set background=dark
+colorscheme gruvbox
+" colorscheme tender
+" }}}
+" Font config {{{
+
+set encoding=utf8
+set guifont=Iosevka\ Term:h12
+let g:airline_powerline_fonts = 1
+
+" }}}
+" Turn Off Swap Files {{{
 
 set noswapfile
 set nobackup
@@ -74,7 +78,8 @@ set nowb
 " set backupdir=~/.vim/backups   " Where backups will go.
 " set directory=~/.vim/tmp       " Where temporary files will go.
 
-" ================ Persistent Undo ==================
+" }}}
+" Persistent Undo {{{
 " Keep undo history across sessions, by storing in file.
 " Only works all the time.
 
@@ -84,7 +89,8 @@ if has('persistent_undo')
   set undofile
 endif
 
-" ================ Indentation ======================
+" }}}
+" Indentation {{{
 
 set autoindent
 set smartindent
@@ -106,20 +112,15 @@ set list listchars=tab:\ \ ,trail:·
 set nowrap       "Don't wrap lines
 set linebreak    "Wrap lines at convenient points
 
-" Enable russian lang
-" set keymap=russian-jcukenwin
-set iminsert=0
-set imsearch=0
-
-" set langmap=ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNOPQRSTUVWXYZ,фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz
-
-" ================ Folds ============================
+" }}}
+" Folds {{{
 
 set foldmethod=indent   "fold based on indent
 set foldnestmax=3       "deepest fold is 3 levels
 set nofoldenable        "dont fold by default
 
-" ================ Completion =======================
+" }}}
+" Completion {{{
 
 " set wildmode=list:longest
 set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
@@ -134,21 +135,25 @@ set wildignore+=log/**
 set wildignore+=tmp/**
 set wildignore+=*.png,*.jpg,*.gif
 
-" ================ Scrolling ========================
+" }}}
+" Scrolling {{{
 
 " set scrolloff=8         "Start scrolling when we're 8 lines away from margins
-set sidescrolloff=15
-set sidescroll=1
+" set sidescrolloff=15
+" set sidescroll=1
 
-" ================ Search ===========================
+" }}}
+" Search {{{
 
 set incsearch       " Find the next match as we type the search
 set hlsearch        " Highlight searches by default
 set ignorecase      " Ignore case when searching...
 set smartcase       " ...unless we type a capital
 
-" ================ PluginsList ===================
+" }}}
+" PluginsList {{{
 call plug#begin()
+  Plug 'dahu/VimGym'
   Plug 'ngmy/vim-rubocop'                                           " Ruby linter
   Plug 'Yggdroot/indentLine'                                        " Indent Guides
   Plug 'vim-airline/vim-airline'                                    " Airline
@@ -182,20 +187,24 @@ call plug#begin()
   Plug 'tpope/vim-endwise'
   Plug 'tpope/vim-sensible'                                         " TPope bundle end
   Plug 'jacoborus/tender.vim'                                       " Tender colorscheme
-  Plug 'valloric/youcompleteme'                                     " Autocomplete
+  " Plug 'valloric/youcompleteme'                                     " Autocomplete
   Plug 'takac/vim-hardtime'                                         " Vim learning
     let g:hardtime_default_on = 1
     let g:hardtime_allow_different_key = 1
-    let g:hardtime_ignore_buffer_patterns = [                       " NERD.*                                         " , " __Tagbar__* " ]
+    let g:hardtime_ignore_buffer_patterns = [ "__Tagbar__.*", "NERD.*", "Help.*" ]
     let g:hardtime_maxcount = 2
     let g:hardtime_showmsg = 1
   Plug 'w0rp/ale'                                                   " Auto linter
   Plug 'qpkorr/vim-bufkill'                                         " Close buffer :BW
   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " Fuzzy finder
   Plug 'junegunn/fzf.vim'
+  Plug 'vim-utils/vim-ruby-fold'
+  Plug 'rhysd/clever-f.vim'
+    let g:clever_f_across_no_line=1
+  " Plug 'ryanoasis/vim-devicons'
 call plug#end()
-
-" ========== Tagbar configuration ========
+" }}}
+" Tagbar configuration {{{
 let g:tagbar_type_ruby = {
     \ 'kinds' : [
         \ 'm:modules',
@@ -215,18 +224,21 @@ let g:tagbar_type_css = {
     \ ]
 \ }
 nmap <F8> :TagbarToggle<CR>
-" ============= Indent Guides ================
+" }}}
+" Indent Guides {{{
 
 let g:indentLine_enabled = 1
 let g:indentLine_char= '┆'
 
-" ================ CtrlP config ===========
+" }}}
+" CtrlP config {{{
 "
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
-" ================ Airline config ===========
+" }}}
+" Airline config {{{
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='tender'
 let g:airline_powerline_fonts = 1
@@ -239,7 +251,8 @@ let g:airline#extensions#tabline#show_tab_nr = 1
 let g:airline#extensions#tabline#tab_nr_type = 1
 let g:airline#extensions#tabline#left_alt_sep = ''
 "
-"=============== FZF Config ================
+"}}}
+"FZF Config {{{
 "
 set rtp+=/usr/local/opt/fzf
 map <C-p> :FZF<cr>
@@ -247,7 +260,8 @@ nmap ; :Buffers<CR>
 " nmap <Leader>t :Files<CR>
 nmap <Leader>t :Tags<CR>
 "
-"=============== Ale Config ================
+"}}}
+"Ale Config {{{
 "
 let g:airline#extensions#ale#enabled = 1
 let g:ale_lint_on_text_changed = 'never'
@@ -258,7 +272,8 @@ let g:ale_sign_warning = 'W'
 hi link ALEErrorSign    GruvboxRed
 hi link ALEWarningSign  GruvboxYellow
 "
-" ================= Nerdtree ================
+" }}}
+" Nerdtree {{{
 "
 " Exit wim with :q once if NERDTree is opened
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -266,7 +281,8 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 map <leader><leader> :NERDTreeTabsToggle<CR>
 nmap <leader>m :NERDTreeTabsFind<CR>
 "
-" ================= Keymaps ================
+" }}}
+" Keymaps {{{
 " Save SUDO files
 noremap <Leader>w :w !sudo tee % >/dev/null<CR>
 
@@ -299,7 +315,8 @@ nmap <leader>l mQviwu`Q
 " set ansible filetype
 nmap <leader>a :set ft=ansible<CR>
 
-" ============= Ruby Helpers ===============
+" }}}
+" Ruby Helpers {{{
 
 " create <%= foo %> erb tags using Ctrl-k in edit mode
 imap <silent> <C-K> <%=  %><Esc>2hi
@@ -314,4 +331,10 @@ nmap <silent> // :nohlsearch<CR>
 augroup ruby
   au!
   autocmd FileType ruby set colorcolumn=91
+augroup END
+
+augroup filetype_vim
+  autocmd!
+  autocmd FileType vim setlocal foldmethod=marker
+  autocmd FileType vim :normal zM
 augroup END

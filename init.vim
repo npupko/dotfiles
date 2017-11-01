@@ -186,6 +186,7 @@ call plug#begin()
   Plug 'tpope/vim-fugitive'
   Plug 'tpope/vim-endwise'
   Plug 'tpope/vim-sensible'                                         " TPope bundle end
+  Plug 'tpope/vim-unimpaired'
   Plug 'jacoborus/tender.vim'                                       " Tender colorscheme
   " Plug 'valloric/youcompleteme'                                     " Autocomplete
   Plug 'takac/vim-hardtime'                                         " Vim learning
@@ -239,17 +240,17 @@ let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclu
 
 " }}}
 " Airline config {{{
-let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='tender'
 let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail'
-let g:airline#extensions#tabline#show_buffers = 0
+let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
-let g:airline#extensions#tabline#show_close_button = 0
-let g:airline#extensions#tagbar#enabled = 0
-let g:airline#extensions#tabline#show_tab_nr = 1
-let g:airline#extensions#tabline#tab_nr_type = 1
-let g:airline#extensions#tabline#left_alt_sep = ''
+" let g:airline#extensions#tabline#formatter = 'unique_tail'
+" let g:airline#extensions#tabline#show_buffers = 0
+" let g:airline#extensions#tabline#show_close_button = 0
+" let g:airline#extensions#tagbar#enabled = 0
+" let g:airline#extensions#tabline#show_tab_nr = 1
+" let g:airline#extensions#tabline#tab_nr_type = 1
+" let g:airline#extensions#tabline#left_alt_sep = ''
 "
 "}}}
 "FZF Config {{{
@@ -332,9 +333,14 @@ augroup ruby
   au!
   autocmd FileType ruby set colorcolumn=91
 augroup END
-
+" }}}
+" Other settings {{{
 augroup filetype_vim
   autocmd!
   autocmd FileType vim setlocal foldmethod=marker
   autocmd FileType vim :normal zM
 augroup END
+
+" ROT13 Key
+map <F3> ggVGg?
+" }}}

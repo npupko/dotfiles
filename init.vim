@@ -25,7 +25,7 @@ set updatetime=250 " decreasing updatetime
 " set lazyredraw     " Test for speed
 " set ttyfast        " Faster terminal
 set timeoutlen=1000 ttimeoutlen=0 "Fix lightline
-set nohidden
+set hidden
 
 let g:python3_host_prog = '/usr/local/bin/python3'
 
@@ -197,8 +197,13 @@ call plug#begin()
     let g:hardtime_showmsg = 1
   Plug 'w0rp/ale'                                                   " Auto linter
   Plug 'qpkorr/vim-bufkill'                                         " Close buffer :BW
-  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " Fuzzy finder
-  Plug 'junegunn/fzf.vim'
+  " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " Fuzzy finder
+  " Plug 'junegunn/fzf.vim'
+  Plug 'ctrlpvim/ctrlp.vim'
+  Plug 'mileszs/ack.vim'
+    if executable('ag')
+      let g:ackprg = 'ag --vimgrep'
+    endif
   Plug 'vim-utils/vim-ruby-fold'
   Plug 'rhysd/clever-f.vim'
     let g:clever_f_across_no_line=1
@@ -233,11 +238,15 @@ let g:indentLine_char= '┆'
 
 " }}}
 " CtrlP config {{{
-"
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
+if executable('ag')
+  set grepprg=ag\ --nogroup\ --nocolor
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  let g:ctrlp_use_caching = 0
+endif
 " }}}
 " Airline config {{{
 let g:airline_theme='tender'
@@ -254,13 +263,10 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 "
 "}}}
 "FZF Config {{{
-"
-set rtp+=/usr/local/opt/fzf
-map <C-p> :FZF<cr>
-nmap ; :Buffers<CR>
-" nmap <Leader>t :Files<CR>
-nmap <Leader>t :Tags<CR>
-"
+" set rtp+=/usr/local/opt/fzf
+" map <C-p> :FZF<cr>
+" nmap ; :Buffers<CR>
+" nmap <Leader>t :Tags<CR>
 "}}}
 "Ale Config {{{
 "
@@ -316,6 +322,14 @@ nmap <leader>l mQviwu`Q
 " set ansible filetype
 nmap <leader>a :set ft=ansible<CR>
 
+" ROT13 Key
+map <F3> ggVGg?
+
+" Close Buffer
+noremap <leader>q :BW<CR>
+
+" Buffers list
+nnoremap ; :buffers<CR>:buffer<Space>
 " }}}
 " Ruby Helpers {{{
 
@@ -340,7 +354,4 @@ augroup filetype_vim
   autocmd FileType vim setlocal foldmethod=marker
   autocmd FileType vim :normal zM
 augroup END
-
-" ROT13 Key
-map <F3> ggVGg?
 " }}}

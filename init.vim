@@ -55,11 +55,13 @@ let mapleader=","
 " Themes config {{{
 set termguicolors
 " set t_Co=256
+" let g:gruvbox_termcolors=256
 let g:gruvbox_contrast_dark = 'medium'
 let g:gruvbox_italic = 1
 set background=dark
+" let base16colorspace=256
 colorscheme gruvbox
-" colorscheme tender
+" colorscheme base16-gruvbox-dark-soft
 " }}}
 " Font config {{{
 
@@ -153,9 +155,14 @@ set smartcase       " ...unless we type a capital
 " }}}
 " PluginsList {{{
 call plug#begin()
-  Plug 'dahu/VimGym'
-  Plug 'ngmy/vim-rubocop'                                           " Ruby linter
-  Plug 'Yggdroot/indentLine'                                        " Indent Guides
+  Plug 'roxma/nvim-completion-manager'
+  Plug 'roxma/ncm-rct-complete' " roxma Ruby complete
+  Plug 'vim-scripts/scratch.vim'
+  Plug 'nathanaelkane/vim-indent-guides'
+  let g:indent_guides_enable_on_vim_startup = 1
+  let g:indent_guides_start_level = 2
+  let g:indent_guides_guide_size = 1
+  " Plug 'Yggdroot/indentLine'                                        " Indent Guides
   Plug 'vim-airline/vim-airline'                                    " Airline
   Plug 'vim-airline/vim-airline-themes'                             " Airline themes
   Plug 'mattn/emmet-vim'                                            " Emmet support
@@ -169,8 +176,6 @@ call plug#begin()
   Plug 'arithran/vim-delete-hidden-buffers'                         " Delete hidden buffers
     map <leader>d :DeleteHiddenBuffers<CR>
   Plug 'godlygeek/tabular'                                          " Align text with Tabularize
-  Plug 'plasticboy/vim-markdown'                                    " Markdown syntax
-    let g:vim_markdown_conceal = 0
   Plug 'djoshea/vim-autoread'                                       " Reload changed files opened in vim
   Plug 'jgdavey/vim-blockle'                                        " Ruby changes {} to do-end by '<leader>b'
   Plug 'majutsushi/tagbar'                                          " CTags panel <F8>
@@ -187,18 +192,19 @@ call plug#begin()
   Plug 'tpope/vim-endwise'
   Plug 'tpope/vim-sensible'                                         " TPope bundle end
   Plug 'tpope/vim-unimpaired'
+  Plug 'tpope/vim-dispatch'
+  Plug 'tpope/vim-markdown'
+    let g:vim_markdown_conceal = 0
   Plug 'jacoborus/tender.vim'                                       " Tender colorscheme
   " Plug 'valloric/youcompleteme'                                     " Autocomplete
   Plug 'takac/vim-hardtime'                                         " Vim learning
     let g:hardtime_default_on = 1
     let g:hardtime_allow_different_key = 1
-    let g:hardtime_ignore_buffer_patterns = [ "__Tagbar__.*", "NERD.*", "Help.*" ]
+    let g:hardtime_ignore_buffer_patterns = [ "__Tagbar__.*", "NERD.*", "Help.*", "Quickfix" ]
     let g:hardtime_maxcount = 2
     let g:hardtime_showmsg = 1
   Plug 'w0rp/ale'                                                   " Auto linter
   Plug 'qpkorr/vim-bufkill'                                         " Close buffer :BW
-  " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " Fuzzy finder
-  " Plug 'junegunn/fzf.vim'
   Plug 'ctrlpvim/ctrlp.vim'
   Plug 'mileszs/ack.vim'
     if executable('ag')
@@ -207,7 +213,6 @@ call plug#begin()
   Plug 'vim-utils/vim-ruby-fold'
   Plug 'rhysd/clever-f.vim'
     let g:clever_f_across_no_line=1
-  " Plug 'ryanoasis/vim-devicons'
 call plug#end()
 " }}}
 " Tagbar configuration {{{
@@ -245,7 +250,7 @@ let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclu
 if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-  let g:ctrlp_use_caching = 0
+  let g:ctrlp_use_caching = 1
 endif
 " }}}
 " Airline config {{{
@@ -312,7 +317,7 @@ nnoremap <silent> <bs> <C-w><Left>
 nnoremap <leader>fef :normal! gg=G``<CR>
 
 " Edit .vimrc
-map <leader>v :vsp $MYVIMRC<CR>
+map <leader>v :e $MYVIMRC<CR>
 map <leader>V :source $MYVIMRC<CR>
 
 " upper/lower word
@@ -329,7 +334,18 @@ map <F3> ggVGg?
 noremap <leader>q :BW<CR>
 
 " Buffers list
-nnoremap ; :buffers<CR>:buffer<Space>
+" nnoremap ; :buffers<CR>:buffer<Space>
+nnoremap ; :CtrlPBuffer<CR>
+
+" This will copy the paragraph your cursor is on then paste a copy of it just below.
+noremap cp yap<S-}>p
+
+"Run macros qq with Q
+nnoremap Q @q
+vnoremap Q :norm @q<cr>
+
+" Scratch buffer open
+nnoremap gs :Scratch<CR>
 " }}}
 " Ruby Helpers {{{
 
@@ -347,11 +363,6 @@ augroup ruby
   au!
   autocmd FileType ruby set colorcolumn=91
 augroup END
+
 " }}}
-" Other settings {{{
-augroup filetype_vim
-  autocmd!
-  autocmd FileType vim setlocal foldmethod=marker
-  autocmd FileType vim :normal zM
-augroup END
-" }}}
+" vim:foldmethod=marker:

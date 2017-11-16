@@ -155,13 +155,18 @@ set smartcase       " ...unless we type a capital
 " }}}
 " PluginsList {{{
 call plug#begin()
-  Plug 'roxma/nvim-completion-manager'
-  Plug 'roxma/ncm-rct-complete' " roxma Ruby complete
-  Plug 'vim-scripts/scratch.vim'
+  Plug 'pangloss/vim-javascript'
+  Plug 'mxw/vim-jsx'
+    let g:jsx_ext_required = 0
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  	let g:deoplete#enable_at_startup = 1
+	  let g:deoplete#enable_smart_case = 1
+  " Plug 'roxma/nvim-completion-manager'
+  " Plug 'roxma/ncm-rct-complete'
   Plug 'nathanaelkane/vim-indent-guides'
-  let g:indent_guides_enable_on_vim_startup = 1
-  let g:indent_guides_start_level = 2
-  let g:indent_guides_guide_size = 1
+    let g:indent_guides_enable_on_vim_startup = 1
+    let g:indent_guides_start_level = 2
+    let g:indent_guides_guide_size = 1
   " Plug 'Yggdroot/indentLine'                                        " Indent Guides
   Plug 'vim-airline/vim-airline'                                    " Airline
   Plug 'vim-airline/vim-airline-themes'                             " Airline themes
@@ -332,6 +337,7 @@ map <F3> ggVGg?
 
 " Close Buffer
 noremap <leader>q :BW<CR>
+noremap <leader>Q :BW!<CR>
 
 " Buffers list
 " nnoremap ; :buffers<CR>:buffer<Space>
@@ -364,5 +370,20 @@ augroup ruby
   autocmd FileType ruby set colorcolumn=91
 augroup END
 
+" }}}
+" Run Spec inside of Vim{{{
+noremap <Leader>rs :call RunSpec('spec', '-fp')<CR>
+noremap <Leader>rd :call RunSpec(expand('%:h'), '-fd')<CR>
+noremap <Leader>rf :call RunSpec(expand('%'), '-fd')<CR>
+noremap <Leader>rl :call RunSpec(expand('%'), '-fd -l ' . line('.'))<CR>
+
+function! RunSpec(spec_path, spec_opts)
+  let speccish = match(@%, '_spec.rb$') != -1
+  if speccish
+    exec 'term bundle exec rspec ' . a:spec_opts . ' ' . a:spec_path
+  else
+    echo '<< WARNING >> RunSpec() can only be called from inside spec files!'
+  endif
+endfunction
 " }}}
 " vim:foldmethod=marker:

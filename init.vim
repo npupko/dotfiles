@@ -21,6 +21,7 @@ set nocursorcolumn
 set nocursorline
 set relativenumber
 set updatetime=250 " decreasing updatetime
+lang en_US.UTF-8
 " syntax sync minlines=256
 " set lazyredraw     " Test for speed
 " set ttyfast        " Faster terminal
@@ -155,19 +156,22 @@ set smartcase       " ...unless we type a capital
 " }}}
 " PluginsList {{{
 call plug#begin()
+  Plug 'chrisbra/csv.vim'
+  Plug 'tmux-plugins/vim-tmux'
+  Plug 'neovimhaskell/haskell-vim'
   Plug 'pangloss/vim-javascript'
   Plug 'mxw/vim-jsx'
     let g:jsx_ext_required = 0
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  	let g:deoplete#enable_at_startup = 1
-	  let g:deoplete#enable_smart_case = 1
+    let g:deoplete#enable_at_startup = 1
+    let g:deoplete#enable_smart_case = 1
   " Plug 'roxma/nvim-completion-manager'
   " Plug 'roxma/ncm-rct-complete'
   Plug 'nathanaelkane/vim-indent-guides'
     let g:indent_guides_enable_on_vim_startup = 1
     let g:indent_guides_start_level = 2
     let g:indent_guides_guide_size = 1
-  " Plug 'Yggdroot/indentLine'                                        " Indent Guides
+    let g:indent_guides_exclude_filetypes = ['haskell']
   Plug 'vim-airline/vim-airline'                                    " Airline
   Plug 'vim-airline/vim-airline-themes'                             " Airline themes
   Plug 'mattn/emmet-vim'                                            " Emmet support
@@ -176,7 +180,7 @@ call plug#begin()
   Plug 'Raimondi/delimitMate'                                       " Autoclosing quotes, parenthesis, brackets, etc
     let delimitMate_expand_cr = 1
   Plug 'scrooloose/nerdtree'                                        " File tree
-  Plug 'jistr/vim-nerdtree-tabs'                                    " NERDTree in all tabs together
+  " Plug 'jistr/vim-nerdtree-tabs'                                    " NERDTree in all tabs together
   Plug 'keith/rspec.vim'                                            " Rspec syntax
   Plug 'arithran/vim-delete-hidden-buffers'                         " Delete hidden buffers
     map <leader>d :DeleteHiddenBuffers<CR>
@@ -201,13 +205,12 @@ call plug#begin()
   Plug 'tpope/vim-markdown'
     let g:vim_markdown_conceal = 0
   Plug 'jacoborus/tender.vim'                                       " Tender colorscheme
-  " Plug 'valloric/youcompleteme'                                     " Autocomplete
-  Plug 'takac/vim-hardtime'                                         " Vim learning
-    let g:hardtime_default_on = 1
-    let g:hardtime_allow_different_key = 1
-    let g:hardtime_ignore_buffer_patterns = [ "__Tagbar__.*", "NERD.*", "Help.*", "Quickfix" ]
-    let g:hardtime_maxcount = 2
-    let g:hardtime_showmsg = 1
+  " Plug 'takac/vim-hardtime'                                         " Vim learning
+  "   let g:hardtime_default_on = 1
+  "   let g:hardtime_allow_different_key = 1
+  "   let g:hardtime_ignore_buffer_patterns = [ "__Tagbar__.*", "NERD.*", "Help.*", "Quickfix" ]
+  "   let g:hardtime_maxcount = 2
+  "   let g:hardtime_showmsg = 1
   Plug 'w0rp/ale'                                                   " Auto linter
   Plug 'qpkorr/vim-bufkill'                                         " Close buffer :BW
   Plug 'ctrlpvim/ctrlp.vim'
@@ -216,7 +219,7 @@ call plug#begin()
       let g:ackprg = 'ag --vimgrep'
     endif
   Plug 'vim-utils/vim-ruby-fold'
-  Plug 'rhysd/clever-f.vim'
+  " Plug 'rhysd/clever-f.vim'
     let g:clever_f_across_no_line=1
 call plug#end()
 " }}}
@@ -295,8 +298,11 @@ hi link ALEWarningSign  GruvboxYellow
 " Exit wim with :q once if NERDTree is opened
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-map <leader><leader> :NERDTreeTabsToggle<CR>
-nmap <leader>m :NERDTreeTabsFind<CR>
+map <leader><leader> :NERDTreeToggle<CR>
+nmap <leader>m :NERDTreeFind<CR>
+
+" map <leader><leader> :NERDTreeTabsToggle<CR>
+" nmap <leader>m :NERDTreeTabsFind<CR>
 "
 " }}}
 " Keymaps {{{
@@ -341,7 +347,7 @@ noremap <leader>Q :BW!<CR>
 
 " Buffers list
 " nnoremap ; :buffers<CR>:buffer<Space>
-nnoremap ; :CtrlPBuffer<CR>
+nnoremap \ :CtrlPBuffer<CR>
 
 " This will copy the paragraph your cursor is on then paste a copy of it just below.
 noremap cp yap<S-}>p
@@ -367,7 +373,7 @@ nmap <silent> // :nohlsearch<CR>
 " Set colorcolumn for ruby files
 augroup ruby
   au!
-  autocmd FileType ruby set colorcolumn=91
+  autocmd FileType ruby set colorcolumn=81
 augroup END
 
 " }}}

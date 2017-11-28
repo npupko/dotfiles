@@ -37,7 +37,6 @@ syntax on
 let mapleader=","
 "}}}
 " Statusline config {{{
-"
 " set statusline=%F%m%r%h%w\ [%l/%L,\ %v]\ [%p%%]\ %=[TYPE=%Y]\ [FMT=%{&ff}]\ %{\"[ENC=\".(&fenc==\"\"?&enc:&fenc).\"]\"}
 "
 "Another status line
@@ -51,28 +50,21 @@ let mapleader=","
 " set statusline+=0x%-8B                       " character value
 " set statusline+=%-14(%l,%c%V%)               " line, character
 " set statusline+=%<%P                         " file position
-"
 " }}}
 " Themes config {{{
 set termguicolors
 " set t_Co=256
-" let g:gruvbox_termcolors=256
 let g:gruvbox_contrast_dark = 'medium'
 let g:gruvbox_italic = 1
 set background=dark
-" let base16colorspace=256
 colorscheme gruvbox
-" colorscheme base16-gruvbox-dark-soft
 " }}}
 " Font config {{{
-
 set encoding=utf8
 set guifont=Iosevka\ Term:h12
 let g:airline_powerline_fonts = 1
-
 " }}}
 " Turn Off Swap Files {{{
-
 set noswapfile
 set nobackup
 set nowb
@@ -80,21 +72,15 @@ set nowb
 " set backup                     " Enable creation of backup file.
 " set backupdir=~/.vim/backups   " Where backups will go.
 " set directory=~/.vim/tmp       " Where temporary files will go.
-
 " }}}
 " Persistent Undo {{{
-" Keep undo history across sessions, by storing in file.
-" Only works all the time.
-
 if has('persistent_undo')
   silent !mkdir ~/.vim/backups > /dev/null 2>&1
   set undodir=~/.vim/backups
   set undofile
 endif
-
 " }}}
 " Indentation {{{
-
 set autoindent
 set smartindent
 set smarttab
@@ -114,18 +100,13 @@ set list listchars=tab:\ \ ,trail:·
 " set list listchars=tab:>-,trail:.,extends:>
 set nowrap       "Don't wrap lines
 set linebreak    "Wrap lines at convenient points
-
 " }}}
 " Folds {{{
-
 set foldmethod=indent   "fold based on indent
 set foldnestmax=3       "deepest fold is 3 levels
 set nofoldenable        "dont fold by default
-
 " }}}
 " Completion {{{
-
-" set wildmode=list:longest
 set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
 set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
 set wildignore+=*vim/backups*
@@ -137,22 +118,17 @@ set wildignore+=*.gem
 set wildignore+=log/**
 set wildignore+=tmp/**
 set wildignore+=*.png,*.jpg,*.gif
-
 " }}}
 " Scrolling {{{
-
 " set scrolloff=8         "Start scrolling when we're 8 lines away from margins
 " set sidescrolloff=15
 " set sidescroll=1
-
 " }}}
 " Search {{{
-
 set incsearch       " Find the next match as we type the search
 set hlsearch        " Highlight searches by default
 set ignorecase      " Ignore case when searching...
 set smartcase       " ...unless we type a capital
-
 " }}}
 " PluginsList {{{
 call plug#begin()
@@ -165,8 +141,6 @@ call plug#begin()
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
     let g:deoplete#enable_at_startup = 1
     let g:deoplete#enable_smart_case = 1
-  " Plug 'roxma/nvim-completion-manager'
-  " Plug 'roxma/ncm-rct-complete'
   Plug 'nathanaelkane/vim-indent-guides'
     let g:indent_guides_enable_on_vim_startup = 1
     let g:indent_guides_start_level = 2
@@ -180,7 +154,6 @@ call plug#begin()
   Plug 'Raimondi/delimitMate'                                       " Autoclosing quotes, parenthesis, brackets, etc
     let delimitMate_expand_cr = 1
   Plug 'scrooloose/nerdtree'                                        " File tree
-  " Plug 'jistr/vim-nerdtree-tabs'                                    " NERDTree in all tabs together
   Plug 'keith/rspec.vim'                                            " Rspec syntax
   Plug 'arithran/vim-delete-hidden-buffers'                         " Delete hidden buffers
     map <leader>d :DeleteHiddenBuffers<CR>
@@ -219,7 +192,6 @@ call plug#begin()
       let g:ackprg = 'ag --vimgrep'
     endif
   Plug 'vim-utils/vim-ruby-fold'
-  " Plug 'rhysd/clever-f.vim'
     let g:clever_f_across_no_line=1
 call plug#end()
 " }}}
@@ -245,10 +217,8 @@ let g:tagbar_type_css = {
 nmap <F8> :TagbarToggle<CR>
 " }}}
 " Indent Guides {{{
-
 let g:indentLine_enabled = 1
 let g:indentLine_char= '┆'
-
 " }}}
 " CtrlP config {{{
 let g:ctrlp_map = '<c-p>'
@@ -282,7 +252,6 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 " nmap <Leader>t :Tags<CR>
 "}}}
 "Ale Config {{{
-"
 let g:airline#extensions#ale#enabled = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_enter = 0
@@ -291,19 +260,13 @@ let g:ale_sign_warning = 'W'
 
 hi link ALEErrorSign    GruvboxRed
 hi link ALEWarningSign  GruvboxYellow
-"
 " }}}
 " Nerdtree {{{
-"
 " Exit wim with :q once if NERDTree is opened
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 map <leader><leader> :NERDTreeToggle<CR>
 nmap <leader>m :NERDTreeFind<CR>
-
-" map <leader><leader> :NERDTreeTabsToggle<CR>
-" nmap <leader>m :NERDTreeTabsFind<CR>
-"
 " }}}
 " Keymaps {{{
 " Save SUDO files
@@ -360,7 +323,6 @@ vnoremap Q :norm @q<cr>
 nnoremap gs :Scratch<CR>
 " }}}
 " Ruby Helpers {{{
-
 " create <%= foo %> erb tags using Ctrl-k in edit mode
 imap <silent> <C-K> <%=  %><Esc>2hi
 
@@ -375,7 +337,6 @@ augroup ruby
   au!
   autocmd FileType ruby set colorcolumn=81
 augroup END
-
 " }}}
 " Run Spec inside of Vim{{{
 noremap <Leader>rs :call RunSpec('spec', '-fp')<CR>

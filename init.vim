@@ -25,8 +25,9 @@ lang en_US.UTF-8
 " syntax sync minlines=256
 " set lazyredraw     " Test for speed
 " set ttyfast        " Faster terminal
-set timeoutlen=1000 ttimeoutlen=0 "Fix lightline
+set timeoutlen=1000 ttimeoutlen=0 " Fix lightline
 set hidden
+set clipboard=unnamed " Use system clipboard
 
 let g:python3_host_prog = '/usr/local/bin/python3'
 
@@ -53,9 +54,11 @@ let mapleader=","
 " }}}
 " Themes config {{{
 set termguicolors
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 " set t_Co=256
 let g:gruvbox_contrast_dark = 'medium'
 let g:gruvbox_italic = 1
+let g:gruvbox_terminal_colors = 1
 set background=dark
 colorscheme gruvbox
 " }}}
@@ -118,6 +121,8 @@ set wildignore+=*.gem
 set wildignore+=log/**
 set wildignore+=tmp/**
 set wildignore+=*.png,*.jpg,*.gif
+" set wildmode=list:longest,list:full # TODO: What the hell?
+" set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/* # TODO: What the hell?
 " }}}
 " Scrolling {{{
 " set scrolloff=8         "Start scrolling when we're 8 lines away from margins
@@ -132,7 +137,17 @@ set smartcase       " ...unless we type a capital
 " }}}
 " PluginsList {{{
 call plug#begin()
-  Plug 'chrisbra/csv.vim'
+  " Plug 'chrisbra/csv.vim'
+  Plug 'morhetz/gruvbox'
+  Plug 'tpope/vim-dispatch'
+  Plug 'janko-m/vim-test'
+    " let test#strategy = "dispatch"
+    let test#strategy = "neovim"
+    nmap <silent> <leader>tn :TestNearest<CR>
+    nmap <silent> <leader>tf :TestFile<CR>
+    nmap <silent> <leader>ts :TestSuite<CR>
+    nmap <silent> <leader>tl :TestLast<CR>
+    nmap <silent> <leader>tg :TestVisit<CR>
   Plug 'tmux-plugins/vim-tmux'
   Plug 'neovimhaskell/haskell-vim'
   Plug 'pangloss/vim-javascript'
@@ -192,7 +207,6 @@ call plug#begin()
       let g:ackprg = 'ag --vimgrep'
     endif
   Plug 'vim-utils/vim-ruby-fold'
-    let g:clever_f_across_no_line=1
 call plug#end()
 " }}}
 " Tagbar configuration {{{
@@ -319,8 +333,9 @@ noremap cp yap<S-}>p
 nnoremap Q @q
 vnoremap Q :norm @q<cr>
 
-" Scratch buffer open
-nnoremap gs :Scratch<CR>
+if has('nvim')
+  tmap <C-o> <C-\><C-n>
+end
 " }}}
 " Ruby Helpers {{{
 " create <%= foo %> erb tags using Ctrl-k in edit mode
@@ -338,19 +353,5 @@ augroup ruby
   autocmd FileType ruby set colorcolumn=81
 augroup END
 " }}}
-" Run Spec inside of Vim{{{
-noremap <Leader>rs :call RunSpec('spec', '-fp')<CR>
-noremap <Leader>rd :call RunSpec(expand('%:h'), '-fd')<CR>
-noremap <Leader>rf :call RunSpec(expand('%'), '-fd')<CR>
-noremap <Leader>rl :call RunSpec(expand('%'), '-fd -l ' . line('.'))<CR>
 
-function! RunSpec(spec_path, spec_opts)
-  let speccish = match(@%, '_spec.rb$') != -1
-  if speccish
-    exec 'term bundle exec rspec ' . a:spec_opts . ' ' . a:spec_path
-  else
-    echo '<< WARNING >> RunSpec() can only be called from inside spec files!'
-  endif
-endfunction
-" }}}
 " vim:foldmethod=marker:

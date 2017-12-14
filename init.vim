@@ -58,7 +58,9 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 " set t_Co=256
 let g:gruvbox_contrast_dark = 'medium'
 let g:gruvbox_italic = 1
+let g:gruvbox_bold = 1
 let g:gruvbox_terminal_colors = 1
+let g:gruvbox_improved_strings = 1
 set background=dark
 colorscheme gruvbox
 " }}}

@@ -60,7 +60,7 @@ let g:gruvbox_contrast_dark = 'medium'
 let g:gruvbox_italic = 1
 let g:gruvbox_bold = 1
 let g:gruvbox_terminal_colors = 1
-let g:gruvbox_improved_strings = 1
+let g:gruvbox_improved_strings = 0
 set background=dark
 colorscheme gruvbox
 " }}}
@@ -86,13 +86,13 @@ if has('persistent_undo')
 endif
 " }}}
 " Indentation {{{
-set autoindent
-set smartindent
-set smarttab
-set shiftwidth=2
-set softtabstop=2
-set tabstop=2
-set expandtab
+" set autoindent
+" set smartindent
+" set smarttab
+" set shiftwidth=2
+" set softtabstop=2
+" set tabstop=2
+" set expandtab
 
 " Auto indent pasted text
 nnoremap p p=`]<C-o>
@@ -140,8 +140,10 @@ set smartcase       " ...unless we type a capital
 " PluginsList {{{
 call plug#begin()
   " Plug 'chrisbra/csv.vim'
+  Plug 'xtal8/traces.vim'
   Plug 'morhetz/gruvbox'
   Plug 'tpope/vim-dispatch'
+  Plug 'tpope/vim-eunuch'
   Plug 'janko-m/vim-test'
     " let test#strategy = "dispatch"
     let test#strategy = "neovim"
@@ -194,6 +196,7 @@ call plug#begin()
   Plug 'tpope/vim-dispatch'
   Plug 'tpope/vim-markdown'
     let g:vim_markdown_conceal = 0
+  Plug 'tpope/vim-sleuth'
   Plug 'jacoborus/tender.vim'                                       " Tender colorscheme
   " Plug 'takac/vim-hardtime'                                         " Vim learning
   "   let g:hardtime_default_on = 1
@@ -268,7 +271,7 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 " nmap <Leader>t :Tags<CR>
 "}}}
 "Ale Config {{{
-let g:airline#extensions#ale#enabled = 1
+let g:airline#extensions#ale#enabled = 0
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_enter = 0
 let g:ale_sign_error = 'E'
@@ -331,13 +334,19 @@ nnoremap \ :CtrlPBuffer<CR>
 " This will copy the paragraph your cursor is on then paste a copy of it just below.
 noremap cp yap<S-}>p
 
-"Run macros qq with Q
+" Run macros qq with Q
 nnoremap Q @q
 vnoremap Q :norm @q<cr>
 
+" Exit from terminal window by Ctrl+O
 if has('nvim')
   tmap <C-o> <C-\><C-n>
 end
+
+
+" Show next matched string at the center of screen
+nnoremap n nzz
+nnoremap N Nzz
 " }}}
 " Ruby Helpers {{{
 " create <%= foo %> erb tags using Ctrl-k in edit mode
@@ -354,6 +363,22 @@ augroup ruby
   au!
   autocmd FileType ruby set colorcolumn=81
 augroup END
+" }}}
+
+" Testing features {{{
+nnoremap <C-K> *#
+" nnoremap <C-K> :call HighlightNearCursor()<CR>
+
+" function HighlightNearCursor()
+"   if !exists("s:highlightcursor")
+"     " match Todo /\k*\%#\k*/
+"     match Todo /\k*\%#\k*/
+"     let s:highlightcursor=1
+"   else
+"     match None
+"     unlet s:highlightcursor
+"   endif
+" endfunction
 " }}}
 
 " vim:foldmethod=marker:

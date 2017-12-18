@@ -364,7 +364,6 @@ augroup ruby
   autocmd FileType ruby set colorcolumn=81
 augroup END
 " }}}
-
 " Testing features {{{
 nnoremap <C-K> *#
 " nnoremap <C-K> :call HighlightNearCursor()<CR>
@@ -379,6 +378,10 @@ nnoremap <C-K> *#
 "     unlet s:highlightcursor
 "   endif
 " endfunction
+
+" Make those debugger statements painfully obvious
+au BufEnter *.rb syn match error contained "\<binding.pry\>"
+au BufEnter *.rb syn match error contained "\<debugger\>"
 " }}}
 
 " vim:foldmethod=marker:

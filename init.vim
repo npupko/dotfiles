@@ -2,6 +2,7 @@
 " Author: Nikita Pupko
 " http://github.com/Random4405/dotfiles
 " General Config {{{
+autocmd!
 set nocompatible
 set number                     " Line numbers are good
 set backspace=indent,eol,start " Allow backspace in insert mode
@@ -21,6 +22,8 @@ set nocursorcolumn
 set nocursorline
 set relativenumber
 set updatetime=250 " decreasing updatetime
+set synmaxcol=1200
+set nojoinspaces " Use only 1 space after "." when joining lines instead of 2
 lang en_US.UTF-8
 " syntax sync minlines=256
 " set lazyredraw     " Test for speed
@@ -101,7 +104,9 @@ nnoremap P P=`]<C-o>
 filetype plugin on
 filetype indent on
 " Display tabs and trailing spaces visually
-set list listchars=tab:\ \ ,trail:·
+" set list listchars=tab:\ \ ,trail:·,eol:¬
+set list listchars=trail:·,eol:¬
+" set list listchars=tab:▸\ ,trail:·,eol:¬,nbsp:_,extends:❯,precedes:❮
 " set list listchars=tab:>-,trail:.,extends:>
 set nowrap       "Don't wrap lines
 set linebreak    "Wrap lines at convenient points
@@ -382,6 +387,12 @@ nnoremap <C-K> *#
 " Make those debugger statements painfully obvious
 au BufEnter *.rb syn match error contained "\<binding.pry\>"
 au BufEnter *.rb syn match error contained "\<debugger\>"
+
+" Apply vimrc changes after save
+" if has('nvim')
+"   au BufWritePost init.vim so $MYVIMRC
+" endif
+" au BufWritePost .vimrc so $MYVIMRC
 " }}}
 
 " vim:foldmethod=marker:

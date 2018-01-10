@@ -89,13 +89,13 @@ if has('persistent_undo')
 endif
 " }}}
 " Indentation {{{
-" set autoindent
-" set smartindent
-" set smarttab
-" set shiftwidth=2
-" set softtabstop=2
-" set tabstop=2
-" set expandtab
+set autoindent
+set smartindent
+set smarttab
+set shiftwidth=2
+set softtabstop=2
+set tabstop=2
+set expandtab
 
 " Auto indent pasted text
 nnoremap p p=`]<C-o>
@@ -104,8 +104,8 @@ nnoremap P P=`]<C-o>
 filetype plugin on
 filetype indent on
 " Display tabs and trailing spaces visually
-" set list listchars=tab:\ \ ,trail:·,eol:¬
-set list listchars=trail:·,eol:¬
+set list listchars=tab:\ \ ,trail:·,eol:¬
+" set list listchars=trail:·,eol:¬
 " set list listchars=tab:▸\ ,trail:·,eol:¬,nbsp:_,extends:❯,precedes:❮
 " set list listchars=tab:>-,trail:.,extends:>
 set nowrap       "Don't wrap lines
@@ -145,10 +145,10 @@ set smartcase       " ...unless we type a capital
 " PluginsList {{{
 call plug#begin()
   " Plug 'chrisbra/csv.vim'
-  Plug 'xtal8/traces.vim'
+  " Plug 'xtal8/traces.vim'
+  Plug 'elixir-editors/vim-elixir'
+  Plug 'slashmili/alchemist.vim'
   Plug 'morhetz/gruvbox'
-  Plug 'tpope/vim-dispatch'
-  Plug 'tpope/vim-eunuch'
   Plug 'janko-m/vim-test'
     " let test#strategy = "dispatch"
     let test#strategy = "neovim"
@@ -185,7 +185,6 @@ call plug#begin()
   Plug 'djoshea/vim-autoread'                                       " Reload changed files opened in vim
   Plug 'jgdavey/vim-blockle'                                        " Ruby changes {} to do-end by '<leader>b'
   Plug 'majutsushi/tagbar'                                          " CTags panel <F8>
-  Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; python2 generate.py' }                 " Ansible syntax
   Plug 'kchmck/vim-coffee-script'                                   " CoffeScript syntax
   Plug 'kshenoy/vim-signature'                                      " Vim better marks
   Plug 'craigemery/vim-autotag'                                     " Autotag new files
@@ -197,18 +196,13 @@ call plug#begin()
   Plug 'tpope/vim-fugitive'
   Plug 'tpope/vim-endwise'
   Plug 'tpope/vim-sensible'                                         " TPope bundle end
+  Plug 'tpope/vim-dispatch'
   Plug 'tpope/vim-unimpaired'
   Plug 'tpope/vim-dispatch'
   Plug 'tpope/vim-markdown'
+  Plug 'tpope/vim-eunuch'
     let g:vim_markdown_conceal = 0
-  Plug 'tpope/vim-sleuth'
   Plug 'jacoborus/tender.vim'                                       " Tender colorscheme
-  " Plug 'takac/vim-hardtime'                                         " Vim learning
-  "   let g:hardtime_default_on = 1
-  "   let g:hardtime_allow_different_key = 1
-  "   let g:hardtime_ignore_buffer_patterns = [ "__Tagbar__.*", "NERD.*", "Help.*", "Quickfix" ]
-  "   let g:hardtime_maxcount = 2
-  "   let g:hardtime_showmsg = 1
   Plug 'w0rp/ale'                                                   " Auto linter
   Plug 'qpkorr/vim-bufkill'                                         " Close buffer :BW
   Plug 'ctrlpvim/ctrlp.vim'
@@ -217,6 +211,8 @@ call plug#begin()
       let g:ackprg = 'ag --vimgrep'
     endif
   Plug 'vim-utils/vim-ruby-fold'
+  Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; python2 generate.py' }                 " Ansible syntax
+    let g:ansible_options = {'ignore_blank_lines': 0}
 call plug#end()
 " }}}
 " Tagbar configuration {{{
@@ -276,7 +272,7 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 " nmap <Leader>t :Tags<CR>
 "}}}
 "Ale Config {{{
-let g:airline#extensions#ale#enabled = 0
+let g:airline#extensions#ale#enabled = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_enter = 0
 let g:ale_sign_error = 'E'

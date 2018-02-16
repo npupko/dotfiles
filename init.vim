@@ -149,6 +149,7 @@ call plug#begin()
   Plug 'elixir-editors/vim-elixir'
   Plug 'slashmili/alchemist.vim'
   Plug 'morhetz/gruvbox'
+  Plug 'airblade/vim-gitgutter'
   Plug 'janko-m/vim-test'
     " let test#strategy = "dispatch"
     let test#strategy = "neovim"
@@ -162,9 +163,10 @@ call plug#begin()
   Plug 'pangloss/vim-javascript'
   Plug 'mxw/vim-jsx'
     let g:jsx_ext_required = 0
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    let g:deoplete#enable_at_startup = 1
-    let g:deoplete#enable_smart_case = 1
+  Plug 'roxma/nvim-completion-manager'
+  " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  "   let g:deoplete#enable_at_startup = 1
+  "   let g:deoplete#enable_smart_case = 1
   Plug 'nathanaelkane/vim-indent-guides'
     let g:indent_guides_enable_on_vim_startup = 1
     let g:indent_guides_start_level = 2

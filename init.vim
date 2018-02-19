@@ -32,7 +32,7 @@ set timeoutlen=1000 ttimeoutlen=0 " Fix lightline
 set hidden
 set clipboard=unnamed " Use system clipboard
 
-let g:python3_host_prog = '/usr/local/bin/python3'
+" let g:python3_host_prog = '/usr/local/bin/python3'
 
 "turn on syntax highlighting
 syntax on
@@ -56,6 +56,7 @@ let mapleader=","
 " set statusline+=%<%P                         " file position
 " }}}
 " Themes config {{{
+set fillchars+=vert:│
 set termguicolors
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 " set t_Co=256
@@ -146,6 +147,7 @@ set smartcase       " ...unless we type a capital
 call plug#begin()
   " Plug 'chrisbra/csv.vim'
   " Plug 'xtal8/traces.vim'
+  " Plug 'vim-ruby/vim-ruby'
   Plug 'elixir-editors/vim-elixir'
   Plug 'slashmili/alchemist.vim'
   Plug 'morhetz/gruvbox'
@@ -159,6 +161,7 @@ call plug#begin()
     nmap <silent> <leader>tl :TestLast<CR>
     nmap <silent> <leader>tg :TestVisit<CR>
   Plug 'tmux-plugins/vim-tmux'
+  Plug 'christoomey/vim-tmux-navigator'
   Plug 'neovimhaskell/haskell-vim'
   Plug 'pangloss/vim-javascript'
   Plug 'mxw/vim-jsx'
@@ -189,7 +192,7 @@ call plug#begin()
   Plug 'majutsushi/tagbar'                                          " CTags panel <F8>
   Plug 'kchmck/vim-coffee-script'                                   " CoffeScript syntax
   Plug 'kshenoy/vim-signature'                                      " Vim better marks
-  Plug 'craigemery/vim-autotag'                                     " Autotag new files
+  " Plug 'craigemery/vim-autotag'                                     " Autotag new files
   Plug 'tpope/vim-rails'                                            " TPope bundle start
   Plug 'tpope/vim-haml'
   Plug 'tpope/vim-surround'
@@ -213,8 +216,8 @@ call plug#begin()
       let g:ackprg = 'ag --vimgrep'
     endif
   Plug 'vim-utils/vim-ruby-fold'
-  Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; python2 generate.py' }                 " Ansible syntax
-    let g:ansible_options = {'ignore_blank_lines': 0}
+  " Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; python2 generate.py' }                 " Ansible syntax
+    " let g:ansible_options = {'ignore_blank_lines': 0}
 call plug#end()
 " }}}
 " Tagbar configuration {{{
@@ -254,22 +257,29 @@ if executable('ag')
 endif
 " }}}
 " Airline config {{{
-let g:airline_theme='tender'
-" let g:airline_powerline_fonts = 1
+" let g:airline_theme='tender'
+let g:airline_theme='gruvbox'
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline#extensions#tabline#show_tab_type = 0
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tagbar#enabled = 1
+let g:airline#extensions#tabline#show_close_button = 0
+let g:airline_skip_empty_sections = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#syntastic#enabled = 0
+let g:airline#extensions#tmuxline#enabled = 0
+let g:airline_detect_iminsert=1
+let g:airline#extensions#tabline#show_buffers = 1
+let g:airline#extensions#wordcount#enabled = 0
+let g:airline_powerline_fonts = 1
+"
 " let g:airline#extensions#tabline#buffer_nr_format = '%s: '
-
 " let g:airline#extensions#tabline#fnamemod = ':t'
 " let g:airline#extensions#tabline#show_buffers = 0
 " let g:airline#extensions#tabline#show_close_button = 0
 " let g:airline#extensions#tabline#show_tab_nr = 1
 " let g:airline#extensions#tabline#tab_nr_type = 1
 " let g:airline#extensions#tabline#left_alt_sep = ''
-"
 "}}}
 "FZF Config {{{
 " set rtp+=/usr/local/opt/fzf
@@ -289,7 +299,6 @@ hi link ALEWarningSign  GruvboxYellow
 " }}}
 " Nerdtree {{{
 " Exit wim with :q once if NERDTree is opened
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 map <leader><leader> :NERDTreeToggle<CR>
 nmap <leader>m :NERDTreeFind<CR>
@@ -369,7 +378,14 @@ nmap <silent> // :nohlsearch<CR>
 augroup ruby
   au!
   autocmd FileType ruby set colorcolumn=81
+  au BufEnter *.rb syn match error contained "\<binding.pry\>"
+  au BufEnter *.rb syn match error contained "\<debugger\>"
 augroup END
+
+augroup nerdtree
+  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+augroup END
+
 " }}}
 " Testing features {{{
 nnoremap <C-K> *#
@@ -387,8 +403,6 @@ nnoremap <C-K> *#
 " endfunction
 
 " Make those debugger statements painfully obvious
-au BufEnter *.rb syn match error contained "\<binding.pry\>"
-au BufEnter *.rb syn match error contained "\<debugger\>"
 
 " Apply vimrc changes after save
 " if has('nvim')

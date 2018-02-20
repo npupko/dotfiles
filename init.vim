@@ -23,7 +23,8 @@ set nocursorline
 set relativenumber
 set updatetime=250 " decreasing updatetime
 set synmaxcol=1200
-" set nojoinspaces " Use only 1 space after "." when joining lines instead of 2
+set fillchars+=vert:│
+" set nojoinspaces " Use only 1 space after '.' when joining lines instead of 2
 lang en_US.UTF-8
 " syntax sync minlines=256
 " set lazyredraw     " Test for speed
@@ -56,7 +57,6 @@ let mapleader=","
 " set statusline+=%<%P                         " file position
 " }}}
 " Themes config {{{
-set fillchars+=vert:│
 set termguicolors
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 " set t_Co=256
@@ -148,12 +148,12 @@ call plug#begin()
   " Plug 'chrisbra/csv.vim'
   " Plug 'xtal8/traces.vim'
   " Plug 'vim-ruby/vim-ruby'
-  Plug 'elixir-editors/vim-elixir'
-  Plug 'slashmili/alchemist.vim'
+  Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
+  Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
   Plug 'morhetz/gruvbox'
+  " Plug 'jacoborus/tender.vim'                                       " Tender colorscheme
   Plug 'airblade/vim-gitgutter'
-  Plug 'janko-m/vim-test'
-    " let test#strategy = "dispatch"
+  Plug 'janko-m/vim-test', { 'on':  ['TestFile', 'TestNearest', 'TestSuite', 'TestLast', 'TestVisit'] }
     let test#strategy = "neovim"
     nmap <silent> <leader>tn :TestNearest<CR>
     nmap <silent> <leader>tf :TestFile<CR>
@@ -161,10 +161,10 @@ call plug#begin()
     nmap <silent> <leader>tl :TestLast<CR>
     nmap <silent> <leader>tg :TestVisit<CR>
   Plug 'tmux-plugins/vim-tmux'
-  Plug 'christoomey/vim-tmux-navigator'
-  Plug 'neovimhaskell/haskell-vim'
-  Plug 'pangloss/vim-javascript'
-  Plug 'mxw/vim-jsx'
+  " Plug 'christoomey/vim-tmux-navigator'
+  Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
+  Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+  Plug 'mxw/vim-jsx', { 'for': 'javascript' }
     let g:jsx_ext_required = 0
   Plug 'roxma/nvim-completion-manager'
   " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -177,45 +177,50 @@ call plug#begin()
     let g:indent_guides_exclude_filetypes = ['haskell']
   Plug 'vim-airline/vim-airline'                                    " Airline
   Plug 'vim-airline/vim-airline-themes'                             " Airline themes
-  Plug 'mattn/emmet-vim'                                            " Emmet support
-  Plug 'vim-scripts/matchit.zip'                                    " % moves for HTML
-  Plug 'gregsexton/MatchTag'                                        " Highlight HTML tags
+  Plug 'mattn/emmet-vim', { 'for': ['html', 'css', 'sass', 'scss'] }
+  Plug 'vim-scripts/matchit.zip', { 'for': 'html' }                 " % moves for HTML
+  Plug 'gregsexton/MatchTag', { 'for': 'html' }                     " Highlight HTML tags
   Plug 'Raimondi/delimitMate'                                       " Autoclosing quotes, parenthesis, brackets, etc
     let delimitMate_expand_cr = 1
-  Plug 'scrooloose/nerdtree'                                        " File tree
-  Plug 'keith/rspec.vim'                                            " Rspec syntax
-  Plug 'arithran/vim-delete-hidden-buffers'                         " Delete hidden buffers
-    map <leader>d :DeleteHiddenBuffers<CR>
-  Plug 'godlygeek/tabular'                                          " Align text with Tabularize
+  Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }           " File tree
+  Plug 'keith/rspec.vim', { 'for': 'ruby' }                         " Rspec syntax
+  " Plug 'arithran/vim-delete-hidden-buffers'                       " Delete hidden buffers
+    " map <leader>d :DeleteHiddenBuffers<CR>
   Plug 'djoshea/vim-autoread'                                       " Reload changed files opened in vim
-  Plug 'jgdavey/vim-blockle'                                        " Ruby changes {} to do-end by '<leader>b'
-  Plug 'majutsushi/tagbar'                                          " CTags panel <F8>
-  Plug 'kchmck/vim-coffee-script'                                   " CoffeScript syntax
-  Plug 'kshenoy/vim-signature'                                      " Vim better marks
-  " Plug 'craigemery/vim-autotag'                                     " Autotag new files
+  Plug 'jgdavey/vim-blockle', { 'for': 'ruby' }                                        " Ruby changes {} to do-end by '<leader>b'
+  Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }                                          " CTags panel <F8>
+  Plug 'kchmck/vim-coffee-script', { 'for': 'coffescript' }         " CoffeScript syntax
+  " Plug 'kshenoy/vim-signature'                                    " Vim better marks
+  " Plug 'craigemery/vim-autotag'                                   " Autotag new files
   Plug 'tpope/vim-rails'                                            " TPope bundle start
-  Plug 'tpope/vim-haml'
+  Plug 'tpope/vim-haml', { 'for': 'haml' }
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-commentary'
   Plug 'tpope/vim-repeat'
-  Plug 'tpope/vim-fugitive'
+  " Plug 'tpope/vim-fugitive'
   Plug 'tpope/vim-endwise'
-  Plug 'tpope/vim-sensible'                                         " TPope bundle end
+  Plug 'tpope/vim-sensible'
   Plug 'tpope/vim-dispatch'
   Plug 'tpope/vim-unimpaired'
-  Plug 'tpope/vim-dispatch'
-  Plug 'tpope/vim-markdown'
-  Plug 'tpope/vim-eunuch'
+  Plug 'tpope/vim-markdown', { 'for': 'markdown' }
+  " Plug 'tpope/vim-eunuch'
     let g:vim_markdown_conceal = 0
-  Plug 'jacoborus/tender.vim'                                       " Tender colorscheme
-  Plug 'w0rp/ale'                                                   " Auto linter
+  Plug 'w0rp/ale', { 'on': 'ALEEnable' }                                                   " Auto linter
+    let g:airline#extensions#ale#enabled = 1
+    let g:ale_lint_on_text_changed = 'never'
+    let g:ale_lint_on_enter = 0
+    let g:ale_sign_error = 'E'
+    let g:ale_sign_warning = 'W'
+
+    hi link ALEErrorSign    GruvboxRed
+    hi link ALEWarningSign  GruvboxYellow
   Plug 'qpkorr/vim-bufkill'                                         " Close buffer :BW
   Plug 'ctrlpvim/ctrlp.vim'
   Plug 'mileszs/ack.vim'
     if executable('ag')
       let g:ackprg = 'ag --vimgrep'
     endif
-  Plug 'vim-utils/vim-ruby-fold'
+  " Plug 'vim-utils/vim-ruby-fold'
   " Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; python2 generate.py' }                 " Ansible syntax
     " let g:ansible_options = {'ignore_blank_lines': 0}
 call plug#end()
@@ -267,6 +272,7 @@ let g:airline#extensions#tabline#show_close_button = 0
 let g:airline_skip_empty_sections = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#syntastic#enabled = 0
+let g:airline#extensions#ctrlspace#enabled = 0
 let g:airline#extensions#tmuxline#enabled = 0
 let g:airline_detect_iminsert=1
 let g:airline#extensions#tabline#show_buffers = 1
@@ -288,14 +294,6 @@ let g:airline_powerline_fonts = 1
 " nmap <Leader>t :Tags<CR>
 "}}}
 "Ale Config {{{
-let g:airline#extensions#ale#enabled = 1
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_enter = 0
-let g:ale_sign_error = 'E'
-let g:ale_sign_warning = 'W'
-
-hi link ALEErrorSign    GruvboxRed
-hi link ALEWarningSign  GruvboxYellow
 " }}}
 " Nerdtree {{{
 " Exit wim with :q once if NERDTree is opened
@@ -389,6 +387,17 @@ augroup END
 " }}}
 " Testing features {{{
 nnoremap <C-K> *#
+
+set regexpengine=2
+
+map <leader>d :call DeleteHiddenBuffers()<CR>
+function DeleteHiddenBuffers()
+    let tpbl=[]
+    call map(range(1, tabpagenr('$')), 'extend(tpbl, tabpagebuflist(v:val))')
+    for buf in filter(range(1, bufnr('$')), 'bufexists(v:val) && index(tpbl, v:val)==-1')
+        silent execute 'bwipeout' buf
+    endfor
+endfunction
 " nnoremap <C-K> :call HighlightNearCursor()<CR>
 
 " function HighlightNearCursor()

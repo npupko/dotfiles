@@ -387,8 +387,11 @@ nnoremap <C-K> *#
 " endfunction
 
 " Make those debugger statements painfully obvious
-au BufEnter *.rb syn match error contained "\<binding.pry\>"
-au BufEnter *.rb syn match error contained "\<debugger\>"
+augroup debug
+  au!
+  au BufEnter *.rb syn match error contained "\<binding.pry\>"
+  au BufEnter *.rb syn match error contained "\<debugger\>"
+augroup END
 
 " Apply vimrc changes after save
 " if has('nvim')

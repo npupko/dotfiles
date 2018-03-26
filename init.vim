@@ -152,7 +152,9 @@ call plug#begin()
   Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
   Plug 'morhetz/gruvbox'
   " Plug 'jacoborus/tender.vim'                                       " Tender colorscheme
-  Plug 'airblade/vim-gitgutter'
+  " Plug 'airblade/vim-gitgutter'
+  Plug 'mhinz/vim-signify'
+  Plug 'Shougo/context_filetype.vim' " WTF?
   Plug 'janko-m/vim-test', { 'on':  ['TestFile', 'TestNearest', 'TestSuite', 'TestLast', 'TestVisit'] }
     let test#strategy = "neovim"
     nmap <silent> <leader>tn :TestNearest<CR>
@@ -161,12 +163,14 @@ call plug#begin()
     nmap <silent> <leader>tl :TestLast<CR>
     nmap <silent> <leader>tg :TestVisit<CR>
   Plug 'tmux-plugins/vim-tmux'
+  Plug 'jparise/vim-graphql'
   " Plug 'christoomey/vim-tmux-navigator'
   Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
   Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
   Plug 'mxw/vim-jsx', { 'for': 'javascript' }
     let g:jsx_ext_required = 0
-  Plug 'roxma/nvim-completion-manager'
+  Plug 'Valloric/YouCompleteMe', { 'do': './install.py'}
+  " Plug 'roxma/nvim-completion-manager'
   " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   "   let g:deoplete#enable_at_startup = 1
   "   let g:deoplete#enable_smart_case = 1
@@ -205,7 +209,8 @@ call plug#begin()
   Plug 'tpope/vim-markdown', { 'for': 'markdown' }
   " Plug 'tpope/vim-eunuch'
     let g:vim_markdown_conceal = 0
-  Plug 'w0rp/ale', { 'on': 'ALEEnable' }                                                   " Auto linter
+  Plug 'w0rp/ale'
+  " , { 'on': 'ALEEnable' }                                                   " Auto linter
     let g:airline#extensions#ale#enabled = 1
     let g:ale_lint_on_text_changed = 'never'
     let g:ale_lint_on_enter = 0
@@ -386,7 +391,9 @@ augroup END
 
 " }}}
 " Testing features {{{
-nnoremap <C-K> *#
+vnoremap // y/<C-R>"<CR>
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 set regexpengine=2
 

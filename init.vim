@@ -24,7 +24,7 @@ set relativenumber
 set updatetime=250 " decreasing updatetime
 set synmaxcol=1200
 set fillchars+=vert:│
-" set nojoinspaces " Use only 1 space after '.' when joining lines instead of 2
+set nojoinspaces " Use only 1 space after '.' when joining lines instead of 2
 lang en_US.UTF-8
 " syntax sync minlines=256
 " set lazyredraw     " Test for speed
@@ -145,18 +145,15 @@ set smartcase       " ...unless we type a capital
 " }}}
 " PluginsList {{{
 call plug#begin()
-  " Plug 'chrisbra/csv.vim'
-  " Plug 'xtal8/traces.vim'
-  " Plug 'vim-ruby/vim-ruby'
+  Plug 'vim-ruby/vim-ruby'
+    let g:ruby_host_prog = 'rvm @global do neovim-ruby-host'
+    let g:ruby_operators = 1
   Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
   Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
   Plug 'morhetz/gruvbox'
-  " Plug 'jacoborus/tender.vim'                                       " Tender colorscheme
-  " Plug 'airblade/vim-gitgutter'
-  Plug 'mhinz/vim-signify'
-  Plug 'Shougo/context_filetype.vim' " WTF?
+  " Plug 'mhinz/vim-signify'
   Plug 'janko-m/vim-test', { 'on':  ['TestFile', 'TestNearest', 'TestSuite', 'TestLast', 'TestVisit'] }
-    let test#strategy = "neovim"
+  let test#strategy = "neovim"
     nmap <silent> <leader>tn :TestNearest<CR>
     nmap <silent> <leader>tf :TestFile<CR>
     nmap <silent> <leader>ts :TestSuite<CR>
@@ -164,16 +161,11 @@ call plug#begin()
     nmap <silent> <leader>tg :TestVisit<CR>
   Plug 'tmux-plugins/vim-tmux'
   Plug 'jparise/vim-graphql'
-  " Plug 'christoomey/vim-tmux-navigator'
   Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
   Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
   Plug 'mxw/vim-jsx', { 'for': 'javascript' }
     let g:jsx_ext_required = 0
   Plug 'Valloric/YouCompleteMe', { 'do': './install.py'}
-  " Plug 'roxma/nvim-completion-manager'
-  " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  "   let g:deoplete#enable_at_startup = 1
-  "   let g:deoplete#enable_smart_case = 1
   Plug 'nathanaelkane/vim-indent-guides'
     let g:indent_guides_enable_on_vim_startup = 1
     let g:indent_guides_start_level = 2
@@ -186,14 +178,12 @@ call plug#begin()
   Plug 'gregsexton/MatchTag', { 'for': 'html' }                     " Highlight HTML tags
   Plug 'Raimondi/delimitMate'                                       " Autoclosing quotes, parenthesis, brackets, etc
     let delimitMate_expand_cr = 1
-  Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }           " File tree
-  Plug 'keith/rspec.vim', { 'for': 'ruby' }                         " Rspec syntax
-  " Plug 'arithran/vim-delete-hidden-buffers'                       " Delete hidden buffers
-    " map <leader>d :DeleteHiddenBuffers<CR>
+  Plug 'scrooloose/nerdtree', { 'on':  ['NERDTreeToggle', 'NERDTreeFind'] }           " File tree
+  " Plug 'keith/rspec.vim', { 'for': 'ruby' }                         " Rspec syntax
   Plug 'djoshea/vim-autoread'                                       " Reload changed files opened in vim
   Plug 'jgdavey/vim-blockle', { 'for': 'ruby' }                                        " Ruby changes {} to do-end by '<leader>b'
   Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }                                          " CTags panel <F8>
-  Plug 'kchmck/vim-coffee-script', { 'for': 'coffescript' }         " CoffeScript syntax
+  Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }         " CoffeScript syntax
   " Plug 'kshenoy/vim-signature'                                    " Vim better marks
   " Plug 'craigemery/vim-autotag'                                   " Autotag new files
   Plug 'tpope/vim-rails'                                            " TPope bundle start
@@ -201,14 +191,15 @@ call plug#begin()
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-commentary'
   Plug 'tpope/vim-repeat'
-  " Plug 'tpope/vim-fugitive'
+  Plug 'tpope/vim-fugitive'
   Plug 'tpope/vim-endwise'
   Plug 'tpope/vim-sensible'
   Plug 'tpope/vim-dispatch'
   Plug 'tpope/vim-unimpaired'
   Plug 'tpope/vim-markdown', { 'for': 'markdown' }
+  Plug 'tpope/vim-liquid'
   " Plug 'tpope/vim-eunuch'
-    let g:vim_markdown_conceal = 0
+    " let g:vim_markdown_conceal = 0
   Plug 'w0rp/ale'
   " , { 'on': 'ALEEnable' }                                                   " Auto linter
     let g:airline#extensions#ale#enabled = 1
@@ -216,6 +207,10 @@ call plug#begin()
     let g:ale_lint_on_enter = 0
     let g:ale_sign_error = 'E'
     let g:ale_sign_warning = 'W'
+
+    " let g:ale_set_loclist = 0
+    " let g:ale_set_quickfix = 1
+    " let g:ale_open_list = 1
 
     hi link ALEErrorSign    GruvboxRed
     hi link ALEWarningSign  GruvboxYellow
@@ -377,47 +372,27 @@ imap <silent> <C-J> <%  %><Esc>2hi
 "Clear current search highlight by double tapping //
 nmap <silent> // :nohlsearch<CR>
 
+" }}}
+" Autogroups and functions {{{
 " Set colorcolumn for ruby files
 augroup ruby
   au!
   autocmd FileType ruby set colorcolumn=81
-  au BufEnter *.rb syn match error contained "\<binding.pry\>"
-  au BufEnter *.rb syn match error contained "\<debugger\>"
 augroup END
 
 augroup nerdtree
   autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 augroup END
 
-" }}}
-" Testing features {{{
-vnoremap // y/<C-R>"<CR>
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
-
-set regexpengine=2
-
 map <leader>d :call DeleteHiddenBuffers()<CR>
 
 function! DeleteHiddenBuffers()
-    let tpbl=[]
-    call map(range(1, tabpagenr('$')), 'extend(tpbl, tabpagebuflist(v:val))')
-    for buf in filter(range(1, bufnr('$')), 'bufexists(v:val) && index(tpbl, v:val)==-1')
-        silent execute 'bwipeout' buf
-    endfor
+  let tpbl=[]
+  call map(range(1, tabpagenr('$')), 'extend(tpbl, tabpagebuflist(v:val))')
+  for buf in filter(range(1, bufnr('$')), 'bufexists(v:val) && index(tpbl, v:val)==-1')
+    silent execute 'bwipeout' buf
+  endfor
 endfunction
-" nnoremap <C-K> :call HighlightNearCursor()<CR>
-
-" function HighlightNearCursor()
-"   if !exists("s:highlightcursor")
-"     " match Todo /\k*\%#\k*/
-"     match Todo /\k*\%#\k*/
-"     let s:highlightcursor=1
-"   else
-"     match None
-"     unlet s:highlightcursor
-"   endif
-" endfunction
 
 " Make those debugger statements painfully obvious
 augroup debug
@@ -425,6 +400,24 @@ augroup debug
   au BufEnter *.rb syn match error contained "\<binding.pry\>"
   au BufEnter *.rb syn match error contained "\<debugger\>"
 augroup END
+" }}}
+" Testing features {{{
+vnoremap // y/<C-R>"<CR>
+" nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+" nmap <silent> <C-j> <Plug>(ale_next_wrap)
+
+set regexpengine=2
+
+ augroup vimrc
+   autocmd!
+   autocmd BufWinEnter,Syntax * syn sync minlines=500 maxlines=500
+ augroup END
+
+augroup env_syntax
+  autocmd!
+  autocmd BufNewFile,BufRead *.env.* set syntax=sh
+augroup END
+
 
 " Apply vimrc changes after save
 " if has('nvim')

@@ -11,3 +11,12 @@
 .xinitrc
 .xsession
 .zshrc
+
+.ruby-gemset
+tags
+!*tags/
+coverage
+dump.rdb
+.env
+.env.*
+.DS_Store

@@ -25,7 +25,9 @@ set updatetime=250 " decreasing updatetime
 set synmaxcol=1200
 set fillchars+=vert:│
 set nojoinspaces " Use only 1 space after '.' when joining lines instead of 2
+set tags=./tags;,tags;
 lang en_US.UTF-8
+set encoding=UTF-8
 " syntax sync minlines=256
 " set lazyredraw     " Test for speed
 " set ttyfast        " Faster terminal
@@ -34,6 +36,7 @@ set hidden
 set clipboard=unnamed " Use system clipboard
 
 " let g:python3_host_prog = '/usr/local/bin/python3'
+" let g:loaded_python3_provider=1
 
 "turn on syntax highlighting
 syntax on
@@ -145,6 +148,7 @@ set smartcase       " ...unless we type a capital
 " }}}
 " PluginsList {{{
 call plug#begin()
+  Plug 'lifepillar/pgsql.vim'
   Plug 'vim-ruby/vim-ruby'
     let g:ruby_host_prog = 'rvm @global do neovim-ruby-host'
     let g:ruby_operators = 1
@@ -165,7 +169,9 @@ call plug#begin()
   Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
   Plug 'mxw/vim-jsx', { 'for': 'javascript' }
     let g:jsx_ext_required = 0
-  Plug 'Valloric/YouCompleteMe', { 'do': './install.py'}
+  Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer'}
+    let g:ycm_collect_identifiers_from_tags_files = 1
+    let g:ycm_key_invoke_completion = '<C-x><C-o>'
   Plug 'nathanaelkane/vim-indent-guides'
     let g:indent_guides_enable_on_vim_startup = 1
     let g:indent_guides_start_level = 2
@@ -179,6 +185,8 @@ call plug#begin()
   Plug 'Raimondi/delimitMate'                                       " Autoclosing quotes, parenthesis, brackets, etc
     let delimitMate_expand_cr = 1
   Plug 'scrooloose/nerdtree', { 'on':  ['NERDTreeToggle', 'NERDTreeFind'] }           " File tree
+    map <leader><leader> :NERDTreeToggle<CR>
+    nmap <leader>m :NERDTreeFind<CR>
   " Plug 'keith/rspec.vim', { 'for': 'ruby' }                         " Rspec syntax
   Plug 'djoshea/vim-autoread'                                       " Reload changed files opened in vim
   Plug 'jgdavey/vim-blockle', { 'for': 'ruby' }                                        " Ruby changes {} to do-end by '<leader>b'
@@ -223,6 +231,7 @@ call plug#begin()
   " Plug 'vim-utils/vim-ruby-fold'
   " Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; python2 generate.py' }                 " Ansible syntax
     " let g:ansible_options = {'ignore_blank_lines': 0}
+  " Plug 'ryanoasis/vim-devicons'
 call plug#end()
 " }}}
 " Tagbar configuration {{{
@@ -293,14 +302,6 @@ let g:airline_powerline_fonts = 1
 " nmap ; :Buffers<CR>
 " nmap <Leader>t :Tags<CR>
 "}}}
-"Ale Config {{{
-" }}}
-" Nerdtree {{{
-" Exit wim with :q once if NERDTree is opened
-
-map <leader><leader> :NERDTreeToggle<CR>
-nmap <leader>m :NERDTreeFind<CR>
-" }}}
 " Keymaps {{{
 " Save SUDO files
 noremap <Leader>w :w !sudo tee % >/dev/null<CR>
@@ -377,7 +378,10 @@ nmap <silent> // :nohlsearch<CR>
 " Set colorcolumn for ruby files
 augroup ruby
   au!
-  autocmd FileType ruby set colorcolumn=81
+  autocmd FileType ruby,eruby set colorcolumn=81
+  autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1 
+  autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+  autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 augroup END
 
 augroup nerdtree

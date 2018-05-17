@@ -27,7 +27,7 @@ set fillchars+=vert:│
 set nojoinspaces " Use only 1 space after '.' when joining lines instead of 2
 set tags=./tags;,tags;
 lang en_US.UTF-8
-set encoding=UTF-8
+" set encoding=UTF-8
 " syntax sync minlines=256
 " set lazyredraw     " Test for speed
 " set ttyfast        " Faster terminal
@@ -58,18 +58,6 @@ let mapleader=","
 " set statusline+=0x%-8B                       " character value
 " set statusline+=%-14(%l,%c%V%)               " line, character
 " set statusline+=%<%P                         " file position
-" }}}
-" Themes config {{{
-set termguicolors
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-" set t_Co=256
-let g:gruvbox_contrast_dark = 'medium'
-let g:gruvbox_italic = 1
-let g:gruvbox_bold = 1
-let g:gruvbox_terminal_colors = 1
-let g:gruvbox_improved_strings = 0
-set background=dark
-colorscheme gruvbox
 " }}}
 " Font config {{{
 set encoding=utf8
@@ -102,8 +90,8 @@ set tabstop=2
 set expandtab
 
 " Auto indent pasted text
-nnoremap p p=`]<C-o>
-nnoremap P P=`]<C-o>
+" nnoremap p p=`]<C-o>
+" nnoremap P P=`]<C-o>
 
 filetype plugin on
 filetype indent on
@@ -149,9 +137,9 @@ set smartcase       " ...unless we type a capital
 " PluginsList {{{
 call plug#begin()
   Plug 'lifepillar/pgsql.vim'
-  Plug 'vim-ruby/vim-ruby'
-    let g:ruby_host_prog = 'rvm @global do neovim-ruby-host'
-    let g:ruby_operators = 1
+  " Plug 'vim-ruby/vim-ruby'
+  "   let g:ruby_host_prog = 'rvm @global do neovim-ruby-host'
+  "   let g:ruby_operators = 1
   Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
   Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
   Plug 'morhetz/gruvbox'
@@ -234,6 +222,23 @@ call plug#begin()
   " Plug 'ryanoasis/vim-devicons'
 call plug#end()
 " }}}
+" Themes config {{{
+set termguicolors
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+set t_Co=256
+let g:gruvbox_contrast_dark = 'medium'
+let g:gruvbox_italic = 1
+let g:gruvbox_bold = 1
+let g:gruvbox_terminal_colors = 1
+let g:gruvbox_improved_strings = 0
+set background=dark
+colorscheme gruvbox
+
+" let g:nofrils_heavylinenumbers = 0
+" colorscheme nofrils-dark
+" colorscheme phoenix
+" PhoenixRed
+" }}}
 " Tagbar configuration {{{
 let g:tagbar_type_ruby = {
     \ 'kinds' : [
@@ -273,6 +278,7 @@ endif
 " Airline config {{{
 " let g:airline_theme='tender'
 let g:airline_theme='gruvbox'
+" let g:airline_theme='minimalist'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_tab_type = 0
 let g:airline#extensions#tabline#buffer_nr_show = 1
@@ -412,10 +418,10 @@ vnoremap // y/<C-R>"<CR>
 
 set regexpengine=2
 
- augroup vimrc
-   autocmd!
-   autocmd BufWinEnter,Syntax * syn sync minlines=500 maxlines=500
- augroup END
+augroup vimrc
+  autocmd!
+  autocmd BufWinEnter,Syntax * syn sync minlines=500 maxlines=500
+augroup END
 
 augroup env_syntax
   autocmd!

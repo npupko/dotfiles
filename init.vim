@@ -27,16 +27,14 @@ set fillchars+=vert:│
 set nojoinspaces " Use only 1 space after '.' when joining lines instead of 2
 set tags=./tags;,tags;
 lang en_US.UTF-8
-" set encoding=UTF-8
+set encoding=UTF-8
 " syntax sync minlines=256
 " set lazyredraw     " Test for speed
 " set ttyfast        " Faster terminal
 set timeoutlen=1000 ttimeoutlen=0 " Fix lightline
 set hidden
 set clipboard=unnamed " Use system clipboard
-
-" let g:python3_host_prog = '/usr/local/bin/python3'
-" let g:loaded_python3_provider=1
+set regexpengine=2 " Use new regexp engine
 
 "turn on syntax highlighting
 syntax on
@@ -46,23 +44,9 @@ let mapleader=","
 "}}}
 " Statusline config {{{
 " set statusline=%F%m%r%h%w\ [%l/%L,\ %v]\ [%p%%]\ %=[TYPE=%Y]\ [FMT=%{&ff}]\ %{\"[ENC=\".(&fenc==\"\"?&enc:&fenc).\"]\"}
-"
-"Another status line
-" set laststatus=2
-" set statusline=
-" set statusline+=%-3.3n\                      " buffer number
-" set statusline+=%f\                          " filename
-" set statusline+=%h%m%r%w                     " status flags
-" set statusline+=\[%{strlen(&ft)?&ft:'none'}] " file type
-" set statusline+=%=                           " right align remainder
-" set statusline+=0x%-8B                       " character value
-" set statusline+=%-14(%l,%c%V%)               " line, character
-" set statusline+=%<%P                         " file position
 " }}}
 " Font config {{{
-set encoding=utf8
 set guifont=Iosevka\ Term:h12
-let g:airline_powerline_fonts = 1
 " }}}
 " Turn Off Swap Files {{{
 set noswapfile
@@ -93,13 +77,29 @@ set expandtab
 " nnoremap p p=`]<C-o>
 " nnoremap P P=`]<C-o>
 
-filetype plugin on
-filetype indent on
+" filetype plugin on
+" filetype indent on
+
+if has('autocmd')
+  filetype indent plugin on
+
+  " Shortcuts to quickly switch to common file types; handy when using
+  " editing abstractions like sudoedit(8)
+  nnoremap _cs :setlocal filetype=css<CR>
+  nnoremap _ht :setlocal filetype=html<CR>
+  nnoremap _sl :setlocal filetype=slim<CR>
+  nnoremap _js :setlocal filetype=javascript<CR>
+  nnoremap _md :setlocal filetype=markdown<CR>
+  nnoremap _rb :setlocal filetype=ruby<CR>
+  nnoremap _sh :setlocal filetype=sh<CR>
+  nnoremap _vi :setlocal filetype=vim<CR>
+  nnoremap _an :setlocal filetype=ansible<CR>
+endif
+
 " Display tabs and trailing spaces visually
 set list listchars=tab:\ \ ,trail:·,eol:¬
-" set list listchars=trail:·,eol:¬
 " set list listchars=tab:▸\ ,trail:·,eol:¬,nbsp:_,extends:❯,precedes:❮
-" set list listchars=tab:>-,trail:.,extends:>
+
 set nowrap       "Don't wrap lines
 set linebreak    "Wrap lines at convenient points
 " }}}
@@ -138,33 +138,21 @@ set smartcase       " ...unless we type a capital
 call plug#begin()
   Plug 'lifepillar/pgsql.vim'
   " Plug 'vim-ruby/vim-ruby'
-  "   let g:ruby_host_prog = 'rvm @global do neovim-ruby-host'
-  "   let g:ruby_operators = 1
   Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
   Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
   Plug 'morhetz/gruvbox'
-  " Plug 'mhinz/vim-signify'
-  Plug 'janko-m/vim-test', { 'on':  ['TestFile', 'TestNearest', 'TestSuite', 'TestLast', 'TestVisit'] }
-  let test#strategy = "neovim"
-    nmap <silent> <leader>tn :TestNearest<CR>
-    nmap <silent> <leader>tf :TestFile<CR>
-    nmap <silent> <leader>ts :TestSuite<CR>
-    nmap <silent> <leader>tl :TestLast<CR>
-    nmap <silent> <leader>tg :TestVisit<CR>
-  Plug 'tmux-plugins/vim-tmux'
-  Plug 'jparise/vim-graphql'
+  " Plug 'janko-m/vim-test', { 'on':  ['TestFile', 'TestNearest', 'TestSuite', 'TestLast', 'TestVisit'] }
+  " let test#strategy = "neovim"
+  "   nmap <silent> <leader>tn :TestNearest<CR>
+  "   nmap <silent> <leader>tf :TestFile<CR>
+  "   nmap <silent> <leader>ts :TestSuite<CR>
+  "   nmap <silent> <leader>tl :TestLast<CR>
+  "   nmap <silent> <leader>tg :TestVisit<CR>
   Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
   Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
   Plug 'mxw/vim-jsx', { 'for': 'javascript' }
     let g:jsx_ext_required = 0
-  Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer'}
-    let g:ycm_collect_identifiers_from_tags_files = 1
-    let g:ycm_key_invoke_completion = '<C-x><C-o>'
-  Plug 'nathanaelkane/vim-indent-guides'
-    let g:indent_guides_enable_on_vim_startup = 1
-    let g:indent_guides_start_level = 2
-    let g:indent_guides_guide_size = 1
-    let g:indent_guides_exclude_filetypes = ['haskell']
+  Plug 'Yggdroot/indentLine'
   Plug 'vim-airline/vim-airline'                                    " Airline
   Plug 'vim-airline/vim-airline-themes'                             " Airline themes
   Plug 'mattn/emmet-vim', { 'for': ['html', 'css', 'sass', 'scss'] }
@@ -177,7 +165,7 @@ call plug#begin()
     nmap <leader>m :NERDTreeFind<CR>
   " Plug 'keith/rspec.vim', { 'for': 'ruby' }                         " Rspec syntax
   Plug 'djoshea/vim-autoread'                                       " Reload changed files opened in vim
-  Plug 'jgdavey/vim-blockle', { 'for': 'ruby' }                                        " Ruby changes {} to do-end by '<leader>b'
+  Plug 'jgdavey/vim-blockle', { 'for': 'ruby' }                     " Ruby changes {} to do-end by '<leader>b'
   Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }                                          " CTags panel <F8>
   Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }         " CoffeScript syntax
   " Plug 'kshenoy/vim-signature'                                    " Vim better marks
@@ -194,8 +182,8 @@ call plug#begin()
   Plug 'tpope/vim-unimpaired'
   Plug 'tpope/vim-markdown', { 'for': 'markdown' }
   Plug 'tpope/vim-liquid'
-  " Plug 'tpope/vim-eunuch'
-    " let g:vim_markdown_conceal = 0
+  Plug 'tpope/vim-rake'
+  Plug 'tpope/vim-bundler'
   Plug 'w0rp/ale'
   " , { 'on': 'ALEEnable' }                                                   " Auto linter
     let g:airline#extensions#ale#enabled = 1
@@ -203,10 +191,6 @@ call plug#begin()
     let g:ale_lint_on_enter = 0
     let g:ale_sign_error = 'E'
     let g:ale_sign_warning = 'W'
-
-    " let g:ale_set_loclist = 0
-    " let g:ale_set_quickfix = 1
-    " let g:ale_open_list = 1
 
     hi link ALEErrorSign    GruvboxRed
     hi link ALEWarningSign  GruvboxYellow
@@ -234,10 +218,6 @@ let g:gruvbox_improved_strings = 0
 set background=dark
 colorscheme gruvbox
 
-" let g:nofrils_heavylinenumbers = 0
-" colorscheme nofrils-dark
-" colorscheme phoenix
-" PhoenixRed
 " }}}
 " Tagbar configuration {{{
 let g:tagbar_type_ruby = {
@@ -276,9 +256,8 @@ if executable('ag')
 endif
 " }}}
 " Airline config {{{
-" let g:airline_theme='tender'
 let g:airline_theme='gruvbox'
-" let g:airline_theme='minimalist'
+let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_tab_type = 0
 let g:airline#extensions#tabline#buffer_nr_show = 1
@@ -293,24 +272,10 @@ let g:airline_detect_iminsert=1
 let g:airline#extensions#tabline#show_buffers = 1
 let g:airline#extensions#wordcount#enabled = 0
 let g:airline_powerline_fonts = 1
-"
-" let g:airline#extensions#tabline#buffer_nr_format = '%s: '
-" let g:airline#extensions#tabline#fnamemod = ':t'
-" let g:airline#extensions#tabline#show_buffers = 0
-" let g:airline#extensions#tabline#show_close_button = 0
-" let g:airline#extensions#tabline#show_tab_nr = 1
-" let g:airline#extensions#tabline#tab_nr_type = 1
-" let g:airline#extensions#tabline#left_alt_sep = ''
-"}}}
-"FZF Config {{{
-" set rtp+=/usr/local/opt/fzf
-" map <C-p> :FZF<cr>
-" nmap ; :Buffers<CR>
-" nmap <Leader>t :Tags<CR>
 "}}}
 " Keymaps {{{
 " Save SUDO files
-noremap <Leader>w :w !sudo tee % >/dev/null<CR>
+" noremap <Leader>w :w !sudo tee % >/dev/null<CR>
 
 " Allow to copy/paste between VIM instances
 " copy the current visual selection to ~/.vbuf
@@ -337,9 +302,6 @@ map <leader>V :source $MYVIMRC<CR>
 " upper/lower word
 nmap <leader>u mQviwU`Q
 nmap <leader>l mQviwu`Q
-
-" set ansible filetype
-nmap <leader>a :set ft=ansible<CR>
 
 " ROT13 Key
 map <F3> ggVGg?
@@ -385,12 +347,10 @@ nmap <silent> // :nohlsearch<CR>
 augroup ruby
   au!
   autocmd FileType ruby,eruby set colorcolumn=81
-  autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1 
-  autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-  autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 augroup END
 
 augroup nerdtree
+  au!
   autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 augroup END
 
@@ -416,8 +376,6 @@ vnoremap // y/<C-R>"<CR>
 " nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 " nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
-set regexpengine=2
-
 augroup vimrc
   autocmd!
   autocmd BufWinEnter,Syntax * syn sync minlines=500 maxlines=500
@@ -427,13 +385,5 @@ augroup env_syntax
   autocmd!
   autocmd BufNewFile,BufRead *.env.* set syntax=sh
 augroup END
-
-
-" Apply vimrc changes after save
-" if has('nvim')
-"   au BufWritePost init.vim so $MYVIMRC
-" endif
-" au BufWritePost .vimrc so $MYVIMRC
-" }}}
 
 " vim:foldmethod=marker:

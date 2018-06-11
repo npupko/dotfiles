@@ -19,12 +19,10 @@ set laststatus=2
 set mouse=a
 set relativenumber
 set nocursorcolumn
-set nocursorline
-set relativenumber
-set updatetime=250 " decreasing updatetime
+set updatetime=250             " decreasing updatetime
 set synmaxcol=1200
 set fillchars+=vert:│
-set nojoinspaces " Use only 1 space after '.' when joining lines instead of 2
+set nojoinspaces               " Use only 1 space after '.' when joining lines instead of 2
 set tags=./tags;,tags;
 lang en_US.UTF-8
 set encoding=UTF-8
@@ -41,7 +39,7 @@ syntax on
 
 " Change leader to a comma because the backslash is too far away
 let mapleader=","
-"}}}
+" }}}
 " Statusline config {{{
 " set statusline=%F%m%r%h%w\ [%l/%L,\ %v]\ [%p%%]\ %=[TYPE=%Y]\ [FMT=%{&ff}]\ %{\"[ENC=\".(&fenc==\"\"?&enc:&fenc).\"]\"}
 " }}}
@@ -79,22 +77,6 @@ set expandtab
 
 " filetype plugin on
 " filetype indent on
-
-if has('autocmd')
-  filetype indent plugin on
-
-  " Shortcuts to quickly switch to common file types; handy when using
-  " editing abstractions like sudoedit(8)
-  nnoremap _cs :setlocal filetype=css<CR>
-  nnoremap _ht :setlocal filetype=html<CR>
-  nnoremap _sl :setlocal filetype=slim<CR>
-  nnoremap _js :setlocal filetype=javascript<CR>
-  nnoremap _md :setlocal filetype=markdown<CR>
-  nnoremap _rb :setlocal filetype=ruby<CR>
-  nnoremap _sh :setlocal filetype=sh<CR>
-  nnoremap _vi :setlocal filetype=vim<CR>
-  nnoremap _an :setlocal filetype=ansible<CR>
-endif
 
 " Display tabs and trailing spaces visually
 set list listchars=tab:\ \ ,trail:·,eol:¬
@@ -137,17 +119,9 @@ set smartcase       " ...unless we type a capital
 " PluginsList {{{
 call plug#begin()
   Plug 'lifepillar/pgsql.vim'
-  " Plug 'vim-ruby/vim-ruby'
   Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
   Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
   Plug 'morhetz/gruvbox'
-  " Plug 'janko-m/vim-test', { 'on':  ['TestFile', 'TestNearest', 'TestSuite', 'TestLast', 'TestVisit'] }
-  " let test#strategy = "neovim"
-  "   nmap <silent> <leader>tn :TestNearest<CR>
-  "   nmap <silent> <leader>tf :TestFile<CR>
-  "   nmap <silent> <leader>ts :TestSuite<CR>
-  "   nmap <silent> <leader>tl :TestLast<CR>
-  "   nmap <silent> <leader>tg :TestVisit<CR>
   Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
   Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
   Plug 'mxw/vim-jsx', { 'for': 'javascript' }
@@ -163,13 +137,10 @@ call plug#begin()
   Plug 'scrooloose/nerdtree', { 'on':  ['NERDTreeToggle', 'NERDTreeFind'] }           " File tree
     map <leader><leader> :NERDTreeToggle<CR>
     nmap <leader>m :NERDTreeFind<CR>
-  " Plug 'keith/rspec.vim', { 'for': 'ruby' }                         " Rspec syntax
   Plug 'djoshea/vim-autoread'                                       " Reload changed files opened in vim
   Plug 'jgdavey/vim-blockle', { 'for': 'ruby' }                     " Ruby changes {} to do-end by '<leader>b'
   Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }                                          " CTags panel <F8>
-  Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }         " CoffeScript syntax
-  " Plug 'kshenoy/vim-signature'                                    " Vim better marks
-  " Plug 'craigemery/vim-autotag'                                   " Autotag new files
+  Plug 'kchmck/vim-coffee-script'
   Plug 'tpope/vim-rails'                                            " TPope bundle start
   Plug 'tpope/vim-haml', { 'for': 'haml' }
   Plug 'tpope/vim-surround'
@@ -185,7 +156,6 @@ call plug#begin()
   Plug 'tpope/vim-rake'
   Plug 'tpope/vim-bundler'
   Plug 'w0rp/ale'
-  " , { 'on': 'ALEEnable' }                                                   " Auto linter
     let g:airline#extensions#ale#enabled = 1
     let g:ale_lint_on_text_changed = 'never'
     let g:ale_lint_on_enter = 0
@@ -200,23 +170,19 @@ call plug#begin()
     if executable('ag')
       let g:ackprg = 'ag --vimgrep'
     endif
-  " Plug 'vim-utils/vim-ruby-fold'
-  " Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; python2 generate.py' }                 " Ansible syntax
-    " let g:ansible_options = {'ignore_blank_lines': 0}
-  " Plug 'ryanoasis/vim-devicons'
 call plug#end()
 " }}}
 " Themes config {{{
 set termguicolors
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set t_Co=256
+set background=dark
+colorscheme gruvbox
 let g:gruvbox_contrast_dark = 'medium'
 let g:gruvbox_italic = 1
 let g:gruvbox_bold = 1
 let g:gruvbox_terminal_colors = 1
 let g:gruvbox_improved_strings = 0
-set background=dark
-colorscheme gruvbox
 
 " }}}
 " Tagbar configuration {{{
@@ -326,7 +292,6 @@ if has('nvim')
   tmap <C-o> <C-\><C-n>
 end
 
-
 " Show next matched string at the center of screen
 nnoremap n nzz
 nnoremap N Nzz
@@ -354,6 +319,23 @@ augroup nerdtree
   autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 augroup END
 
+if has('autocmd')
+  filetype indent plugin on
+
+  " Shortcuts to quickly switch to common file types; handy when using
+  " editing abstractions like sudoedit(8)
+  nnoremap _cs :setlocal filetype=css<CR>
+  nnoremap _co :setlocal filetype=coffee<CR>
+  nnoremap _ht :setlocal filetype=html<CR>
+  nnoremap _sl :setlocal filetype=slim<CR>
+  nnoremap _js :setlocal filetype=javascript<CR>
+  nnoremap _md :setlocal filetype=markdown<CR>
+  nnoremap _rb :setlocal filetype=ruby<CR>
+  nnoremap _sh :setlocal filetype=sh<CR>
+  nnoremap _vi :setlocal filetype=vim<CR>
+  nnoremap _an :setlocal filetype=ansible<CR>
+endif
+
 map <leader>d :call DeleteHiddenBuffers()<CR>
 
 function! DeleteHiddenBuffers()
@@ -364,6 +346,13 @@ function! DeleteHiddenBuffers()
   endfor
 endfunction
 
+map <leader>/ :call AddPry()<CR>
+
+function AddPry()
+  execute "normal obinding.pry\<Esc>"
+endfunction
+
+
 " Make those debugger statements painfully obvious
 augroup debug
   au!
@@ -373,8 +362,8 @@ augroup END
 " }}}
 " Testing features {{{
 vnoremap // y/<C-R>"<CR>
-" nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-" nmap <silent> <C-j> <Plug>(ale_next_wrap)
+nmap <silent> <leader>k <Plug>(ale_previous_wrap)
+nmap <silent> <leader>j <Plug>(ale_next_wrap)
 
 augroup vimrc
   autocmd!

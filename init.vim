@@ -4,6 +4,9 @@
 " General Config {{{
 autocmd!
 set nocompatible
+set modeline                   " automatically setting options from modelines
+set magic                      " For regular expressions turn magic on
+set path=.,**                  " Directories to search when using gf
 set number                     " Line numbers are good
 set backspace=indent,eol,start " Allow backspace in insert mode
 set history=100                " Store lots of :cmdline history
@@ -20,13 +23,12 @@ set mouse=a
 set relativenumber
 set nocursorcolumn
 set updatetime=250             " decreasing updatetime
-set synmaxcol=1200
+set synmaxcol=1000
 set fillchars+=vert:│
 set nojoinspaces               " Use only 1 space after '.' when joining lines instead of 2
 set tags=./tags;,tags;
 lang en_US.UTF-8
 set encoding=UTF-8
-" syntax sync minlines=256
 " set lazyredraw     " Test for speed
 " set ttyfast        " Faster terminal
 set timeoutlen=1000 ttimeoutlen=0 " Fix lightline
@@ -34,11 +36,19 @@ set hidden
 set clipboard=unnamed " Use system clipboard
 set regexpengine=2 " Use new regexp engine
 
-"turn on syntax highlighting
+let g:ruby_host_prog = 'rvm system do neovim-ruby-host'
+
+" turn on syntax highlighting
 syntax on
 
 " Change leader to a comma because the backslash is too far away
 let mapleader=","
+" }}}
+" Completing {{{
+set showfulltag
+set complete=.                  " No wins, buffs, tags, include scanning
+set completeopt=menuone         " Show menu even for one item
+set completeopt+=noselect       " Do not select a match in the menu
 " }}}
 " Statusline config {{{
 " set statusline=%F%m%r%h%w\ [%l/%L,\ %v]\ [%p%%]\ %=[TYPE=%Y]\ [FMT=%{&ff}]\ %{\"[ENC=\".(&fenc==\"\"?&enc:&fenc).\"]\"}
@@ -90,7 +100,7 @@ set foldmethod=indent   "fold based on indent
 set foldnestmax=3       "deepest fold is 3 levels
 set nofoldenable        "dont fold by default
 " }}}
-" Completion {{{
+" Wildmenu {{{
 set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
 set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
 set wildignore+=*vim/backups*
@@ -102,7 +112,7 @@ set wildignore+=*.gem
 set wildignore+=log/**
 set wildignore+=tmp/**
 set wildignore+=*.png,*.jpg,*.gif
-" set wildmode=list:longest,list:full # TODO: What the hell?
+" set wildmode=list:longest,list:full " TODO: What the hell?
 " set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/* # TODO: What the hell?
 " }}}
 " Scrolling {{{
@@ -118,6 +128,7 @@ set smartcase       " ...unless we type a capital
 " }}}
 " PluginsList {{{
 call plug#begin()
+  Plug 'vim-ruby/vim-ruby'
   Plug 'lifepillar/pgsql.vim'
   Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
   Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
@@ -240,7 +251,29 @@ let g:airline#extensions#wordcount#enabled = 0
 let g:airline_powerline_fonts = 1
 "}}}
 " Keymaps {{{
+" Disable arrow movement, resize splits instead.
+let g:elite_mode = 1
+if get(g:, 'elite_mode')
+  nnoremap <Up>    :resize +2<CR>
+  nnoremap <Down>  :resize -2<CR>
+  nnoremap <Left>  :vertical resize +2<CR>
+  nnoremap <Right> :vertical resize -2<CR>
+endif
+
+" Allow misspellings
+cnoreabbrev qw wq
+cnoreabbrev Wq wq
+cnoreabbrev WQ wq
+cnoreabbrev Qa qa
+cnoreabbrev Bd bd
+cnoreabbrev bD bd
+
+" Select blocks after indenting
+xnoremap < <gv
+xnoremap > >gv|
+
 " Save SUDO files
+cmap W!! w !sudo tee % >/dev/null
 " noremap <Leader>w :w !sudo tee % >/dev/null<CR>
 
 " Allow to copy/paste between VIM instances
@@ -352,7 +385,6 @@ function AddPry()
   execute "normal obinding.pry\<Esc>"
 endfunction
 
-
 " Make those debugger statements painfully obvious
 augroup debug
   au!
@@ -365,14 +397,20 @@ vnoremap // y/<C-R>"<CR>
 nmap <silent> <leader>k <Plug>(ale_previous_wrap)
 nmap <silent> <leader>j <Plug>(ale_next_wrap)
 
-augroup vimrc
+" Set augroup
+augroup MyAutoCmd
   autocmd!
-  autocmd BufWinEnter,Syntax * syn sync minlines=500 maxlines=500
+  autocmd CursorHold *? syntax sync minlines=300
 augroup END
 
-augroup env_syntax
+" augroup vimrc
+"   autocmd!
+"   autocmd BufWinEnter,Syntax * syn sync minlines=500 maxlines=500
+" augroup END
+
+augroup filetypes
   autocmd!
-  autocmd BufNewFile,BufRead *.env.* set syntax=sh
+  autocmd BufNewFile,BufRead *.env.* setfiletype sh
 augroup END
 
 " vim:foldmethod=marker:

@@ -128,6 +128,7 @@ set smartcase       " ...unless we type a capital
 " }}}
 " PluginsList {{{
 call plug#begin()
+  Plug 'sheerun/vim-polyglot'
   Plug 'vim-ruby/vim-ruby'
   Plug 'lifepillar/pgsql.vim'
   Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
@@ -137,7 +138,11 @@ call plug#begin()
   Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
   Plug 'mxw/vim-jsx', { 'for': 'javascript' }
     let g:jsx_ext_required = 0
-  Plug 'Yggdroot/indentLine'
+  " Plug 'Yggdroot/indentLine'
+  Plug 'nathanaelkane/vim-indent-guides'
+    let g:indent_guides_enable_on_vim_startup = 1
+    let g:indent_guides_guide_size = 1
+    " let g:indent_guides_exclude_filetypes = ['help', 'nerdtree']
   Plug 'vim-airline/vim-airline'                                    " Airline
   Plug 'vim-airline/vim-airline-themes'                             " Airline themes
   Plug 'mattn/emmet-vim', { 'for': ['html', 'css', 'sass', 'scss'] }
@@ -381,7 +386,7 @@ endfunction
 
 map <leader>/ :call AddPry()<CR>
 
-function AddPry()
+function! AddPry()
   execute "normal obinding.pry\<Esc>"
 endfunction
 
@@ -411,6 +416,7 @@ augroup END
 augroup filetypes
   autocmd!
   autocmd BufNewFile,BufRead *.env.* setfiletype sh
+  autocmd Filetype gitcommit setlocal spell textwidth=72
 augroup END
 
 " vim:foldmethod=marker:

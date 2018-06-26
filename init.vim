@@ -36,7 +36,7 @@ set hidden
 set clipboard=unnamed " Use system clipboard
 set regexpengine=2 " Use new regexp engine
 
-let g:ruby_host_prog = 'rvm system do neovim-ruby-host'
+let g:ruby_host_prog = 'rvm 2.5.0@global do neovim-ruby-host'
 
 " turn on syntax highlighting
 syntax on
@@ -44,11 +44,18 @@ syntax on
 " Change leader to a comma because the backslash is too far away
 let mapleader=","
 " }}}
+" Russian lang {{{
+" set keymap=russian-jcukenwin
+" set langmap=ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNOPQRSTUVWXYZ,фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz
+" }}}
 " Completing {{{
 set showfulltag
 set complete=.                  " No wins, buffs, tags, include scanning
 set completeopt=menuone         " Show menu even for one item
 set completeopt+=noselect       " Do not select a match in the menu
+let g:rubycomplete_buffer_loading       = 1
+let g:rubycomplete_classes_in_global    = 1
+let g:rubycomplete_rails                = 1
 " }}}
 " Statusline config {{{
 " set statusline=%F%m%r%h%w\ [%l/%L,\ %v]\ [%p%%]\ %=[TYPE=%Y]\ [FMT=%{&ff}]\ %{\"[ENC=\".(&fenc==\"\"?&enc:&fenc).\"]\"}
@@ -120,14 +127,11 @@ set wildignore+=*.png,*.jpg,*.gif
 " set sidescrolloff=15
 " set sidescroll=1
 " }}}
-" Search {{{
-set incsearch       " Find the next match as we type the search
-set hlsearch        " Highlight searches by default
-set ignorecase      " Ignore case when searching...
-set smartcase       " ...unless we type a capital
-" }}}
 " PluginsList {{{
 call plug#begin()
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'Shougo/neosnippet.vim'
+  Plug 'Shougo/neosnippet-snippets'
   Plug 'sheerun/vim-polyglot'
   Plug 'vim-ruby/vim-ruby'
   Plug 'lifepillar/pgsql.vim'
@@ -175,8 +179,10 @@ call plug#begin()
     let g:airline#extensions#ale#enabled = 1
     let g:ale_lint_on_text_changed = 'never'
     let g:ale_lint_on_enter = 0
-    let g:ale_sign_error = 'E'
-    let g:ale_sign_warning = 'W'
+    " let g:ale_sign_error = 'EE'
+    " let g:ale_sign_warning = 'WW'
+    " let g:ale_sign_error = 'EE'
+    " let g:ale_sign_warning = 'WW'
 
     hi link ALEErrorSign    GruvboxRed
     hi link ALEWarningSign  GruvboxYellow
@@ -255,6 +261,35 @@ let g:airline#extensions#tabline#show_buffers = 1
 let g:airline#extensions#wordcount#enabled = 0
 let g:airline_powerline_fonts = 1
 "}}}
+" Deoplete {{{
+let g:deoplete#enable_at_startup = 1
+" Plugin key-mappings.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <C-s>     <Plug>(neosnippet_expand_or_jump)
+smap <C-s>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-s>     <Plug>(neosnippet_expand_target)
+
+" call deoplete#custom#source('omni',          'mark', '⌾')
+" call deoplete#custom#source('flow',          'mark', '⌁')
+" call deoplete#custom#source('padawan',       'mark', '⌁')
+" call deoplete#custom#source('TernJS',        'mark', '⌁')
+" call deoplete#custom#source('go',            'mark', '⌁')
+" call deoplete#custom#source('ruby',          'mark', '⌁')
+" call deoplete#custom#source('jedi',          'mark', '⌁')
+" call deoplete#custom#source('vim',           'mark', '⌁')
+" call deoplete#custom#source('neosnippet',    'mark', '⌘')
+" call deoplete#custom#source('tag',           'mark', '⌦')
+" call deoplete#custom#source('around',        'mark', '↻')
+" call deoplete#custom#source('buffer',        'mark', 'ℬ')
+" call deoplete#custom#source('tmux-complete', 'mark', '⊶')
+" call deoplete#custom#source('syntax',        'mark', '♯')
+" call deoplete#custom#source('member',        'mark', '.')
+" call deoplete#custom#var('omni', 'input_patterns', {
+"       \ 'ruby': ['[^. *\t]\.\w*', '[a-zA-Z_]\w*::'],
+"       \ 'java': '[^. *\t]\.\w*',
+"       \ 'php': '\w+|[^. \t]->\w*|\w+::\w*',
+"       \})
+" }}}
 " Keymaps {{{
 " Disable arrow movement, resize splits instead.
 let g:elite_mode = 1

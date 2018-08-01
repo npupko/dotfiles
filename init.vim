@@ -53,9 +53,9 @@ set showfulltag
 set complete=.                  " No wins, buffs, tags, include scanning
 set completeopt=menuone         " Show menu even for one item
 set completeopt+=noselect       " Do not select a match in the menu
-let g:rubycomplete_buffer_loading       = 1
-let g:rubycomplete_classes_in_global    = 1
-let g:rubycomplete_rails                = 1
+" let g:rubycomplete_buffer_loading       = 1
+" let g:rubycomplete_classes_in_global    = 1
+" let g:rubycomplete_rails                = 1
 " }}}
 " Statusline config {{{
 " set statusline=%F%m%r%h%w\ [%l/%L,\ %v]\ [%p%%]\ %=[TYPE=%Y]\ [FMT=%{&ff}]\ %{\"[ENC=\".(&fenc==\"\"?&enc:&fenc).\"]\"}
@@ -130,8 +130,8 @@ set wildignore+=*.png,*.jpg,*.gif
 " PluginsList {{{
 call plug#begin()
   " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  Plug 'Shougo/neosnippet.vim'
-  Plug 'Shougo/neosnippet-snippets'
+  " Plug 'Shougo/neosnippet.vim'
+  " Plug 'Shougo/neosnippet-snippets'
   Plug 'vim-ruby/vim-ruby'
   Plug 'lifepillar/pgsql.vim'
   Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
@@ -160,7 +160,7 @@ call plug#begin()
     nmap <leader>m :NERDTreeFind<CR>
   Plug 'djoshea/vim-autoread'                                       " Reload changed files opened in vim
   Plug 'jgdavey/vim-blockle', { 'for': 'ruby' }                     " Ruby changes {} to do-end by '<leader>b'
-  Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }                                          " CTags panel <F8>
+  " Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }                                          " CTags panel <F8>
   Plug 'kchmck/vim-coffee-script'
   Plug 'tpope/vim-rails'                                            " TPope bundle start
   Plug 'tpope/vim-haml', { 'for': 'haml' }
@@ -169,13 +169,13 @@ call plug#begin()
   Plug 'tpope/vim-repeat'
   Plug 'tpope/vim-fugitive'
   Plug 'tpope/vim-endwise'
-  Plug 'tpope/vim-sensible'
-  Plug 'tpope/vim-dispatch'
+  " Plug 'tpope/vim-sensible'
+  " Plug 'tpope/vim-dispatch'
   Plug 'tpope/vim-unimpaired'
   Plug 'tpope/vim-markdown', { 'for': 'markdown' }
   Plug 'tpope/vim-liquid'
   Plug 'tpope/vim-rake'
-  Plug 'tpope/vim-bundler'
+  " Plug 'tpope/vim-bundler'
   Plug 'tpope/vim-ragtag'
   Plug 'w0rp/ale'
     let g:airline#extensions#ale#enabled = 1
@@ -208,26 +208,30 @@ let g:gruvbox_bold = 1
 let g:gruvbox_terminal_colors = 1
 let g:gruvbox_improved_strings = 0
 
+" Custom search highlighting
+hi Search guifg=#ffffff ctermfg=15 guibg=NONE ctermbg=NONE gui=underline,bold cterm=underline,bold
+hi IncSearch guifg=#282828 ctermfg=235 guibg=#ffffff ctermbg=15 gui=NONE cterm=NONE
+
 " }}}
 " Tagbar configuration {{{
-let g:tagbar_type_ruby = {
-    \ 'kinds' : [
-        \ 'm:modules',
-        \ 'c:classes',
-        \ 'd:describes',
-        \ 'C:contexts',
-        \ 'f:methods',
-        \ 'F:singleton methods'
-    \ ]
-\ }
-let g:tagbar_type_css = {
-\ 'ctagstype' : 'Css',
-    \ 'kinds'     : [
-        \ 'c:classes',
-        \ 's:selectors',
-        \ 'i:identities'
-    \ ]
-\ }
+" let g:tagbar_type_ruby = {
+"     \ 'kinds' : [
+"         \ 'm:modules',
+"         \ 'c:classes',
+"         \ 'd:describes',
+"         \ 'C:contexts',
+"         \ 'f:methods',
+"         \ 'F:singleton methods'
+"     \ ]
+" \ }
+" let g:tagbar_type_css = {
+" \ 'ctagstype' : 'Css',
+"     \ 'kinds'     : [
+"         \ 'c:classes',
+"         \ 's:selectors',
+"         \ 'i:identities'
+"     \ ]
+" \ }
 nmap <F8> :TagbarToggle<CR>
 " }}}
 " Indent Guides {{{
@@ -455,5 +459,6 @@ augroup filetypes
   autocmd BufNewFile,BufRead *.env.* setfiletype sh
   autocmd Filetype gitcommit setlocal spell textwidth=72
 augroup END
+
 
 " vim:foldmethod=marker:

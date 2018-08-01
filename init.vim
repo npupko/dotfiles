@@ -36,7 +36,7 @@ set hidden
 set clipboard=unnamed " Use system clipboard
 set regexpengine=2 " Use new regexp engine
 
-let g:ruby_host_prog = 'rvm 2.5.0@global do neovim-ruby-host'
+let g:ruby_host_prog = 'rvm 2.5.1@global do neovim-ruby-host'
 
 " turn on syntax highlighting
 syntax on
@@ -129,10 +129,9 @@ set wildignore+=*.png,*.jpg,*.gif
 " }}}
 " PluginsList {{{
 call plug#begin()
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'Shougo/neosnippet.vim'
   Plug 'Shougo/neosnippet-snippets'
-  Plug 'sheerun/vim-polyglot'
   Plug 'vim-ruby/vim-ruby'
   Plug 'lifepillar/pgsql.vim'
   Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
@@ -150,10 +149,12 @@ call plug#begin()
   Plug 'vim-airline/vim-airline'                                    " Airline
   Plug 'vim-airline/vim-airline-themes'                             " Airline themes
   Plug 'mattn/emmet-vim', { 'for': ['html', 'css', 'sass', 'scss'] }
-  Plug 'vim-scripts/matchit.zip', { 'for': 'html' }                 " % moves for HTML
-  Plug 'gregsexton/MatchTag', { 'for': 'html' }                     " Highlight HTML tags
-  Plug 'Raimondi/delimitMate'                                       " Autoclosing quotes, parenthesis, brackets, etc
-    let delimitMate_expand_cr = 1
+  " Plug 'vim-scripts/matchit.zip', { 'for': 'html' }                 " % moves for HTML
+
+  " Try new
+  Plug 'jiangmiao/auto-pairs'
+  " Plug 'Raimondi/delimitMate'                                       " Autoclosing quotes, parenthesis, brackets, etc
+    " let delimitMate_expand_cr = 1
   Plug 'scrooloose/nerdtree', { 'on':  ['NERDTreeToggle', 'NERDTreeFind'] }           " File tree
     map <leader><leader> :NERDTreeToggle<CR>
     nmap <leader>m :NERDTreeFind<CR>
@@ -175,6 +176,7 @@ call plug#begin()
   Plug 'tpope/vim-liquid'
   Plug 'tpope/vim-rake'
   Plug 'tpope/vim-bundler'
+  Plug 'tpope/vim-ragtag'
   Plug 'w0rp/ale'
     let g:airline#extensions#ale#enabled = 1
     let g:ale_lint_on_text_changed = 'never'
@@ -309,8 +311,8 @@ cnoreabbrev Bd bd
 cnoreabbrev bD bd
 
 " Select blocks after indenting
-xnoremap < <gv
-xnoremap > >gv|
+" xnoremap < <gv
+" xnoremap > >gv|
 
 " Save SUDO files
 cmap W!! w !sudo tee % >/dev/null

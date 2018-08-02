@@ -437,6 +437,7 @@ augroup MyAutoCmd
   autocmd CursorHold *? syntax sync minlines=300
 
   autocmd TermOpen * :IndentGuidesDisable " Disable indent guides in neovim terminal
+  autocmd BufLeave term://* :IndentGuidesEnable " Disable indent guides in neovim terminal
 augroup END
 
 " augroup vimrc

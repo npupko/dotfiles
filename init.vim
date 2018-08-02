@@ -1,9 +1,10 @@
 " vim/neovim config used by Nikita Pupko
 " Author: Nikita Pupko
-" http://github.com/Random4405/dotfiles
+" http://github.com/npupko/dotfiles
 " General Config {{{
 autocmd!
 set nocompatible
+set confirm                    " Ask on close unsaved buffer instead of error
 set modeline                   " automatically setting options from modelines
 set magic                      " For regular expressions turn magic on
 set path=.,**                  " Directories to search when using gf
@@ -17,24 +18,26 @@ set autoread                   " Reload files changed outside vim
 set nocursorline               " Highlight line with cursor
 set pastetoggle=<F5>           " Normal text paste
 set conceallevel=0             " Don't hide quotes in json
-set showtabline=2
-set laststatus=2
-set mouse=a
-set relativenumber
-set nocursorcolumn
-set updatetime=250             " decreasing updatetime
-set synmaxcol=1000
-set fillchars+=vert:│
+set showtabline=0              " Hide tabline (We love buffers)
+set laststatus=2               " Always show the statusline
+set mouse=a                    " Use mouse in all modes
+set relativenumber             " Relative numbers in the right
+set nocursorcolumn             " Don't show cursor column
+set updatetime=250             " Decreasing updatetime
+set synmaxcol=1000             " Speed up syntax highlighting
+set fillchars+=vert:│          " Beautiful horisontal separator between windows
 set nojoinspaces               " Use only 1 space after '.' when joining lines instead of 2
-set tags=./tags;,tags;
-lang en_US.UTF-8
-set encoding=UTF-8
-" set lazyredraw     " Test for speed
-" set ttyfast        " Faster terminal
-set timeoutlen=1000 ttimeoutlen=0 " Fix lightline
-set hidden
+set tags=./tags;,tags;         " Files for CTags
+set path+=**                   " Useful for fuzzy find
+set timeoutlen=1000            " Fix lightline modes showing
+set ttimeoutlen=0
+set nohidden
 set clipboard=unnamed " Use system clipboard
 set regexpengine=2 " Use new regexp engine
+set encoding=UTF-8
+" set lazyredraw               " Test for speed
+" set ttyfast                  " Faster terminal
+lang en_US.UTF-8
 
 let g:ruby_host_prog = 'rvm 2.5.1@global do neovim-ruby-host'
 
@@ -50,12 +53,9 @@ let mapleader=","
 " }}}
 " Completing {{{
 set showfulltag
-set complete=.                  " No wins, buffs, tags, include scanning
-set completeopt=menuone         " Show menu even for one item
-set completeopt+=noselect       " Do not select a match in the menu
-" let g:rubycomplete_buffer_loading       = 1
-" let g:rubycomplete_classes_in_global    = 1
-" let g:rubycomplete_rails                = 1
+set complete=.                    " No wins, buffs, tags, include scanning
+set completeopt=menuone           " Show menu even for one item
+set completeopt+=noselect         " Do not select a match in the menu
 " }}}
 " Statusline config {{{
 " set statusline=%F%m%r%h%w\ [%l/%L,\ %v]\ [%p%%]\ %=[TYPE=%Y]\ [FMT=%{&ff}]\ %{\"[ENC=\".(&fenc==\"\"?&enc:&fenc).\"]\"}
@@ -92,9 +92,6 @@ set expandtab
 " nnoremap p p=`]<C-o>
 " nnoremap P P=`]<C-o>
 
-" filetype plugin on
-" filetype indent on
-
 " Display tabs and trailing spaces visually
 set list listchars=tab:\ \ ,trail:·,eol:¬
 " set list listchars=tab:▸\ ,trail:·,eol:¬,nbsp:_,extends:❯,precedes:❮
@@ -103,7 +100,7 @@ set nowrap       "Don't wrap lines
 set linebreak    "Wrap lines at convenient points
 " }}}
 " Folds {{{
-set foldmethod=indent   "fold based on indent
+set foldmethod=syntax   "fold based on syntax
 set foldnestmax=3       "deepest fold is 3 levels
 set nofoldenable        "dont fold by default
 " }}}
@@ -119,8 +116,7 @@ set wildignore+=*.gem
 set wildignore+=log/**
 set wildignore+=tmp/**
 set wildignore+=*.png,*.jpg,*.gif
-" set wildmode=list:longest,list:full " TODO: What the hell?
-" set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/* # TODO: What the hell?
+" set wildmode=list:longest,list:full " What the hell?
 " }}}
 " Scrolling {{{
 " set scrolloff=8         "Start scrolling when we're 8 lines away from margins
@@ -129,10 +125,22 @@ set wildignore+=*.png,*.jpg,*.gif
 " }}}
 " PluginsList {{{
 call plug#begin()
-  " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  " Plug 'Shougo/neosnippet.vim'
-  " Plug 'Shougo/neosnippet-snippets'
+  Plug 'janko-m/vim-test', { 'on':  ['TestFile', 'TestNearest', 'TestSuite', 'TestLast', 'TestVisit'] }
+    let test#strategy = "neovim"
+    nmap <silent> <leader>tn :TestNearest<CR>
+    nmap <silent> <leader>tf :TestFile<CR>
+    nmap <silent> <leader>ts :TestSuite<CR>
+    nmap <silent> <leader>tl :TestLast<CR>
+    nmap <silent> <leader>tg :TestVisit<CR>
+  Plug 'othree/html5.vim'
+  Plug 'cakebaker/scss-syntax.vim'
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'Shougo/neosnippet.vim'
+  Plug 'Shougo/neosnippet-snippets'
+  Plug 'honza/vim-snippets'
+    let g:neosnippet#snippets_directory='~/.config/nvim/plugged/vim-snippets/snippets'
   Plug 'vim-ruby/vim-ruby'
+    let ruby_operators = 1
   Plug 'lifepillar/pgsql.vim'
   Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
   Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
@@ -141,13 +149,12 @@ call plug#begin()
   Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
   Plug 'mxw/vim-jsx', { 'for': 'javascript' }
     let g:jsx_ext_required = 0
-  " Plug 'Yggdroot/indentLine'
   Plug 'nathanaelkane/vim-indent-guides'
     let g:indent_guides_enable_on_vim_startup = 1
     let g:indent_guides_guide_size = 1
-    " let g:indent_guides_exclude_filetypes = ['help', 'nerdtree']
-  Plug 'vim-airline/vim-airline'                                    " Airline
-  Plug 'vim-airline/vim-airline-themes'                             " Airline themes
+    let g:indent_guides_exclude_filetypes = ['help']
+  Plug 'vim-airline/vim-airline'
+  Plug 'vim-airline/vim-airline-themes'
   Plug 'mattn/emmet-vim', { 'for': ['html', 'css', 'sass', 'scss'] }
   " Plug 'vim-scripts/matchit.zip', { 'for': 'html' }                 " % moves for HTML
 
@@ -188,7 +195,7 @@ call plug#begin()
 
     hi link ALEErrorSign    GruvboxRed
     hi link ALEWarningSign  GruvboxYellow
-  Plug 'qpkorr/vim-bufkill'                                         " Close buffer :BW
+  " Plug 'qpkorr/vim-bufkill'                                         " Close buffer :BW
   Plug 'ctrlpvim/ctrlp.vim'
   Plug 'mileszs/ack.vim'
     if executable('ag')
@@ -209,34 +216,8 @@ let g:gruvbox_terminal_colors = 1
 let g:gruvbox_improved_strings = 0
 
 " Custom search highlighting
-hi Search guifg=#ffffff ctermfg=15 guibg=NONE ctermbg=NONE gui=underline,bold cterm=underline,bold
-hi IncSearch guifg=#282828 ctermfg=235 guibg=#ffffff ctermbg=15 gui=NONE cterm=NONE
-
-" }}}
-" Tagbar configuration {{{
-" let g:tagbar_type_ruby = {
-"     \ 'kinds' : [
-"         \ 'm:modules',
-"         \ 'c:classes',
-"         \ 'd:describes',
-"         \ 'C:contexts',
-"         \ 'f:methods',
-"         \ 'F:singleton methods'
-"     \ ]
-" \ }
-" let g:tagbar_type_css = {
-" \ 'ctagstype' : 'Css',
-"     \ 'kinds'     : [
-"         \ 'c:classes',
-"         \ 's:selectors',
-"         \ 'i:identities'
-"     \ ]
-" \ }
-nmap <F8> :TagbarToggle<CR>
-" }}}
-" Indent Guides {{{
-let g:indentLine_enabled = 1
-let g:indentLine_char= '┆'
+" hi Search guifg=#ffffff ctermfg=15 guibg=NONE ctermbg=NONE gui=underline,bold cterm=underline,bold
+" hi IncSearch guifg=#282828 ctermfg=235 guibg=#ffffff ctermbg=15 gui=NONE cterm=NONE
 " }}}
 " CtrlP config {{{
 let g:ctrlp_map = '<c-p>'
@@ -252,7 +233,8 @@ endif
 " Airline config {{{
 let g:airline_theme='gruvbox'
 let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#enabled = 0
 let g:airline#extensions#tabline#show_tab_type = 0
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tagbar#enabled = 1
@@ -352,11 +334,16 @@ nmap <leader>l mQviwu`Q
 map <F3> ggVGg?
 
 " Close Buffer
-noremap <leader>q :BW<CR>
-noremap <leader>Q :BW!<CR>
+noremap <leader>q :bw<CR>
+noremap <leader>Q :bw!<CR>
 
-" Buffers list
-" nnoremap ; :buffers<CR>:buffer<Space>
+" Close Buffer without closing split
+nmap <leader>bq :bp <BAR> bd #<CR>
+
+" Buffers list:
+" Vim default
+nnoremap <leader>l :ls<CR>:b<space>
+" CtrlP buffers list
 nnoremap \ :CtrlPBuffer<CR>
 
 " This will copy the paragraph your cursor is on then paste a copy of it just below.
@@ -374,13 +361,14 @@ end
 " Show next matched string at the center of screen
 nnoremap n nzz
 nnoremap N Nzz
-" }}}
-" Ruby Helpers {{{
+
 " create <%= foo %> erb tags using Ctrl-k in edit mode
-imap <silent> <C-K> <%=  %><Esc>2hi
+" Use tpope/ragtag instead
+" imap <silent> <C-K> <%=  %><Esc>2hi
 
 " create <% foo %> erb tags using Ctrl-j in edit mode
-imap <silent> <C-J> <%  %><Esc>2hi
+" Use tpope/ragtag instead
+" imap <silent> <C-J> <%  %><Esc>2hi
 
 "Clear current search highlight by double tapping //
 nmap <silent> // :nohlsearch<CR>
@@ -393,10 +381,10 @@ augroup ruby
   autocmd FileType ruby,eruby set colorcolumn=81
 augroup END
 
-augroup nerdtree
-  au!
-  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-augroup END
+" augroup nerdtree
+"   au!
+"   autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" augroup END
 
 if has('autocmd')
   filetype indent plugin on
@@ -447,6 +435,8 @@ nmap <silent> <leader>j <Plug>(ale_next_wrap)
 augroup MyAutoCmd
   autocmd!
   autocmd CursorHold *? syntax sync minlines=300
+
+  autocmd TermOpen * :IndentGuidesDisable " Disable indent guides in neovim terminal
 augroup END
 
 " augroup vimrc
@@ -459,6 +449,5 @@ augroup filetypes
   autocmd BufNewFile,BufRead *.env.* setfiletype sh
   autocmd Filetype gitcommit setlocal spell textwidth=72
 augroup END
-
 
 " vim:foldmethod=marker:

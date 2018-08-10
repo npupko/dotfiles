@@ -18,7 +18,7 @@ set autoread                   " Reload files changed outside vim
 set nocursorline               " Highlight line with cursor
 set pastetoggle=<F5>           " Normal text paste
 set conceallevel=0             " Don't hide quotes in json
-set showtabline=0              " Hide tabline (We love buffers)
+set showtabline=1              " Hide tabline (We love buffers)
 set laststatus=2               " Always show the statusline
 set mouse=a                    " Use mouse in all modes
 set relativenumber             " Relative numbers in the right
@@ -30,6 +30,7 @@ set nojoinspaces               " Use only 1 space after '.' when joining lines i
 set tags=./tags;,tags;         " Files for CTags
 set path+=**                   " Useful for fuzzy find
 set timeoutlen=1000            " Fix lightline modes showing
+set shortmess+=c               " Hide OmniCompletion Messages
 set ttimeoutlen=0
 set nohidden
 set clipboard=unnamed " Use system clipboard
@@ -125,6 +126,7 @@ set wildignore+=*.png,*.jpg,*.gif
 " }}}
 " PluginsList {{{
 call plug#begin()
+  Plug 'jacoborus/tender.vim'
   Plug 'janko-m/vim-test', { 'on':  ['TestFile', 'TestNearest', 'TestSuite', 'TestLast', 'TestVisit'] }
     let test#strategy = "neovim"
     nmap <silent> <leader>tn :TestNearest<CR>
@@ -197,10 +199,10 @@ call plug#begin()
     hi link ALEWarningSign  GruvboxYellow
   " Plug 'qpkorr/vim-bufkill'                                         " Close buffer :BW
   Plug 'ctrlpvim/ctrlp.vim'
-  Plug 'mileszs/ack.vim'
-    if executable('ag')
-      let g:ackprg = 'ag --vimgrep'
-    endif
+  " Plug 'mileszs/ack.vim'
+  "   if executable('ag')
+  "     let g:ackprg = 'ag --vimgrep'
+  "   endif
 call plug#end()
 " }}}
 " Themes config {{{
@@ -208,12 +210,16 @@ set termguicolors
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set t_Co=256
 set background=dark
-colorscheme gruvbox
-let g:gruvbox_contrast_dark = 'medium'
-let g:gruvbox_italic = 1
-let g:gruvbox_bold = 1
-let g:gruvbox_terminal_colors = 1
-let g:gruvbox_improved_strings = 0
+" colorscheme gruvbox
+" let g:gruvbox_contrast_dark = 'medium'
+" let g:gruvbox_italic = 1
+" let g:gruvbox_bold = 1
+" let g:gruvbox_terminal_colors = 1
+" let g:gruvbox_improved_strings = 0
+" let g:airline_theme='gruvbox'
+
+colorscheme tender
+let g:airline_theme='tender'
 
 " Custom search highlighting
 " hi Search guifg=#ffffff ctermfg=15 guibg=NONE ctermbg=NONE gui=underline,bold cterm=underline,bold
@@ -227,27 +233,28 @@ let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclu
 if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-  let g:ctrlp_use_caching = 1
+  let g:ctrlp_use_caching = 0
+  command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 endif
 " }}}
 " Airline config {{{
-let g:airline_theme='gruvbox'
 let g:airline_powerline_fonts = 1
-" let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#enabled = 0
-let g:airline#extensions#tabline#show_tab_type = 0
-let g:airline#extensions#tabline#buffer_nr_show = 1
-let g:airline#extensions#tagbar#enabled = 1
-let g:airline#extensions#tabline#show_close_button = 0
 let g:airline_skip_empty_sections = 1
-let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline_detect_iminsert = 1
+
 let g:airline#extensions#syntastic#enabled = 0
 let g:airline#extensions#ctrlspace#enabled = 0
 let g:airline#extensions#tmuxline#enabled = 0
-let g:airline_detect_iminsert=1
-let g:airline#extensions#tabline#show_buffers = 1
 let g:airline#extensions#wordcount#enabled = 0
-let g:airline_powerline_fonts = 1
+
+let g:airline#extensions#tabline#enabled = 0
+let g:airline#extensions#tabline#show_close_button = 0
+" let g:airline#extensions#tabline#show_tab_type = 0
+" let g:airline#extensions#tabline#buffer_nr_show = 1
+" let g:airline#extensions#tabline#fnamemod = ':t'
+" let g:airline#extensions#tabline#show_buffers = 0
+" let g:airline#extensions#tabline#show_tabs = 1
+
 "}}}
 " Deoplete {{{
 let g:deoplete#enable_at_startup = 1
@@ -402,6 +409,14 @@ if has('autocmd')
   nnoremap _vi :setlocal filetype=vim<CR>
   nnoremap _an :setlocal filetype=ansible<CR>
 endif
+
+map <leader>; :call DisableRubocopMetrics()<CR>
+
+function! DisableRubocopMetrics()
+  let message = execute(':1message')
+  let command = matchstr(message, '\v\w+\/\w+\ze:')
+  silent execute 'normal $a # rubocop:disable ' . command . '^'
+endfunction
 
 map <leader>d :call DeleteHiddenBuffers()<CR>
 

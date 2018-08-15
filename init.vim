@@ -3,6 +3,7 @@
 " http://github.com/npupko/dotfiles
 " General Config {{{
 autocmd!
+syntax on
 set nocompatible
 set confirm                    " Ask on close unsaved buffer instead of error
 set modeline                   " automatically setting options from modelines
@@ -41,10 +42,6 @@ set encoding=UTF-8
 lang en_US.UTF-8
 
 let g:ruby_host_prog = 'rvm 2.5.1@global do neovim-ruby-host'
-
-" turn on syntax highlighting
-syntax on
-
 " Change leader to a comma because the backslash is too far away
 let mapleader=","
 " }}}
@@ -126,6 +123,7 @@ set wildignore+=*.png,*.jpg,*.gif
 " }}}
 " PluginsList {{{
 call plug#begin()
+  Plug 'pearofducks/ansible-vim'
   Plug 'jacoborus/tender.vim'
   Plug 'janko-m/vim-test', { 'on':  ['TestFile', 'TestNearest', 'TestSuite', 'TestLast', 'TestVisit'] }
     let test#strategy = "neovim"
@@ -210,16 +208,17 @@ set termguicolors
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set t_Co=256
 set background=dark
-" colorscheme gruvbox
-" let g:gruvbox_contrast_dark = 'medium'
-" let g:gruvbox_italic = 1
-" let g:gruvbox_bold = 1
-" let g:gruvbox_terminal_colors = 1
-" let g:gruvbox_improved_strings = 0
-" let g:airline_theme='gruvbox'
 
-colorscheme tender
-let g:airline_theme='tender'
+colorscheme gruvbox
+let g:gruvbox_contrast_dark = 'medium'
+let g:gruvbox_italic = 1
+let g:gruvbox_bold = 1
+let g:gruvbox_terminal_colors = 1
+let g:gruvbox_improved_strings = 0
+let g:airline_theme='gruvbox'
+
+" colorscheme tender
+" let g:airline_theme='tender'
 
 " Custom search highlighting
 " hi Search guifg=#ffffff ctermfg=15 guibg=NONE ctermbg=NONE gui=underline,bold cterm=underline,bold
@@ -407,8 +406,17 @@ if has('autocmd')
   nnoremap _rb :setlocal filetype=ruby<CR>
   nnoremap _sh :setlocal filetype=sh<CR>
   nnoremap _vi :setlocal filetype=vim<CR>
-  nnoremap _an :setlocal filetype=ansible<CR>
+  nnoremap _an :setlocal filetype=yaml.ansible<CR>
 endif
+
+map <leader>cs :call CreateSpec()<CR>
+
+function! CreateSpec()
+  " This function requires tpope/rails.vim
+  let l:file_path = expand('%')
+  let l:spec_path = substitute(l:file_path, '\vapp\/(.+)\.rb', '\1', '')
+  silent execute 'Espec ' . l:spec_path . '!'
+endfunction
 
 map <leader>; :call DisableRubocopMetrics()<CR>
 

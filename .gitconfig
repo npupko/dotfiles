@@ -15,6 +15,7 @@
   mnemonicprefix = true
   algorithm = patience
 [alias]
+  update = commit --amend --no-edit
   co = checkout
   ci = commit
   st = status

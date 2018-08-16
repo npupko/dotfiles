@@ -123,6 +123,7 @@ set wildignore+=*.png,*.jpg,*.gif
 " }}}
 " PluginsList {{{
 call plug#begin()
+  Plug 'junegunn/vim-peekaboo' " Show register content on \", @ and <c-r>
   Plug 'pearofducks/ansible-vim'
   Plug 'jacoborus/tender.vim'
   Plug 'janko-m/vim-test', { 'on':  ['TestFile', 'TestNearest', 'TestSuite', 'TestLast', 'TestVisit'] }
@@ -384,7 +385,7 @@ nmap <silent> // :nohlsearch<CR>
 " Set colorcolumn for ruby files
 augroup ruby
   au!
-  autocmd FileType ruby,eruby set colorcolumn=81
+  autocmd FileType ruby,eruby setlocal colorcolumn=81
 augroup END
 
 " augroup nerdtree

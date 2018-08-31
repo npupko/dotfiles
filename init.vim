@@ -13,7 +13,7 @@ set number                     " Line numbers are good
 set backspace=indent,eol,start " Allow backspace in insert mode
 set history=100                " Store lots of :cmdline history
 set showcmd                    " Show incomplete cmds down the bottom
-set showmode                   " Show current mode down the bottom
+set noshowmode                   " Show current mode down the bottom
 set visualbell                 " No sounds
 set autoread                   " Reload files changed outside vim
 set nocursorline               " Highlight line with cursor
@@ -98,9 +98,9 @@ set nowrap       "Don't wrap lines
 set linebreak    "Wrap lines at convenient points
 " }}}
 " Folds {{{
-set foldmethod=syntax   "fold based on syntax
-set foldnestmax=3       "deepest fold is 3 levels
-set nofoldenable        "dont fold by default
+set foldmethod=syntax   " fold based on syntax
+set foldnestmax=5       " deepest fold is 3 levels
+set nofoldenable        " dont fold by default
 " }}}
 " Wildmenu {{{
 set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
@@ -123,10 +123,13 @@ set wildignore+=*.png,*.jpg,*.gif
 " }}}
 " PluginsList {{{
 call plug#begin()
+  Plug 'rizzatti/dash.vim'
+  Plug 'sheerun/vim-polyglot'
   Plug 'junegunn/vim-peekaboo' " Show register content on \", @ and <c-r>
   Plug 'pearofducks/ansible-vim'
   Plug 'jacoborus/tender.vim'
   Plug 'janko-m/vim-test', { 'on':  ['TestFile', 'TestNearest', 'TestSuite', 'TestLast', 'TestVisit'] }
+  let test#neovim#term_position = "tab"
     let test#strategy = "neovim"
     nmap <silent> <leader>tn :TestNearest<CR>
     nmap <silent> <leader>tf :TestFile<CR>
@@ -138,8 +141,6 @@ call plug#begin()
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'Shougo/neosnippet.vim'
   Plug 'Shougo/neosnippet-snippets'
-  Plug 'honza/vim-snippets'
-    let g:neosnippet#snippets_directory='~/.config/nvim/plugged/vim-snippets/snippets'
   Plug 'vim-ruby/vim-ruby'
     let ruby_operators = 1
   Plug 'lifepillar/pgsql.vim'
@@ -183,6 +184,7 @@ call plug#begin()
   Plug 'tpope/vim-markdown', { 'for': 'markdown' }
   Plug 'tpope/vim-liquid'
   Plug 'tpope/vim-rake'
+  Plug 'tpope/vim-projectionist'
   " Plug 'tpope/vim-bundler'
   Plug 'tpope/vim-ragtag'
   Plug 'w0rp/ale'
@@ -221,6 +223,9 @@ let g:airline_theme='gruvbox'
 " colorscheme tender
 " let g:airline_theme='tender'
 
+" colorscheme happy_hacking
+" let g:airline_theme='tender'
+
 " Custom search highlighting
 " hi Search guifg=#ffffff ctermfg=15 guibg=NONE ctermbg=NONE gui=underline,bold cterm=underline,bold
 " hi IncSearch guifg=#282828 ctermfg=235 guibg=#ffffff ctermbg=15 gui=NONE cterm=NONE
@@ -247,13 +252,15 @@ let g:airline#extensions#ctrlspace#enabled = 0
 let g:airline#extensions#tmuxline#enabled = 0
 let g:airline#extensions#wordcount#enabled = 0
 
-let g:airline#extensions#tabline#enabled = 0
+let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_close_button = 0
-" let g:airline#extensions#tabline#show_tab_type = 0
+" let g:airline#extensions#tabline#show_tab_type = 1
 " let g:airline#extensions#tabline#buffer_nr_show = 1
-" let g:airline#extensions#tabline#fnamemod = ':t'
-" let g:airline#extensions#tabline#show_buffers = 0
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#show_buffers = 0
 " let g:airline#extensions#tabline#show_tabs = 1
+let g:airline#extensions#tabline#tab_min_count = 2
+
 
 "}}}
 " Deoplete {{{
@@ -334,18 +341,18 @@ map <leader>v :e $MYVIMRC<CR>
 map <leader>V :source $MYVIMRC<CR>
 
 " upper/lower word
-nmap <leader>u mQviwU`Q
-nmap <leader>l mQviwu`Q
+nnoremap <leader>u mQviwU`Q
+nnoremap <leader>l mQviwu`Q
 
 " ROT13 Key
-map <F3> ggVGg?
+nnoremap <F3> ggVGg?
 
 " Close Buffer
-noremap <leader>q :bw<CR>
+noremap <leader>bq :bw<CR>
 noremap <leader>Q :bw!<CR>
 
 " Close Buffer without closing split
-nmap <leader>bq :bp <BAR> bd #<CR>
+nnoremap <leader>q :bp <BAR> bw #<CR>
 
 " Buffers list:
 " Vim default
@@ -379,6 +386,9 @@ nnoremap N Nzz
 
 "Clear current search highlight by double tapping //
 nmap <silent> // :nohlsearch<CR>
+
+" Toggle folds by Space
+nnoremap <space> zA
 
 " }}}
 " Autogroups and functions {{{
@@ -473,6 +483,16 @@ augroup filetypes
   autocmd!
   autocmd BufNewFile,BufRead *.env.* setfiletype sh
   autocmd Filetype gitcommit setlocal spell textwidth=72
+augroup END
+
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+,\(^\|\s\s\)ntuser\.\S\+'
+let g:netrw_sort_sequence = '[\/]$,*'
+augroup netrw
+  autocmd!
+  autocmd FileType netrw set nolist
 augroup END
 
 " vim:foldmethod=marker:

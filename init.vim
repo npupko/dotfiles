@@ -123,9 +123,13 @@ set wildignore+=*.png,*.jpg,*.gif
 " }}}
 " PluginsList {{{
 call plug#begin()
+  Plug 'robertmeta/nofrils'
+    let g:nofrils_heavylinenumbers = 1
+  Plug 'pearofducks/ansible-vim'
+    let g:ansible_unindent_after_newline = 1
   Plug 'rizzatti/dash.vim'
-  Plug 'sheerun/vim-polyglot'
-  Plug 'junegunn/vim-peekaboo' " Show register content on \", @ and <c-r>
+  " Plug 'sheerun/vim-polyglot'
+  " Plug 'junegunn/vim-peekaboo' " Show register content on \", @ and <c-r>
   Plug 'pearofducks/ansible-vim'
   Plug 'jacoborus/tender.vim'
   Plug 'janko-m/vim-test', { 'on':  ['TestFile', 'TestNearest', 'TestSuite', 'TestLast', 'TestVisit'] }
@@ -138,9 +142,9 @@ call plug#begin()
     nmap <silent> <leader>tg :TestVisit<CR>
   Plug 'othree/html5.vim'
   Plug 'cakebaker/scss-syntax.vim'
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  Plug 'Shougo/neosnippet.vim'
-  Plug 'Shougo/neosnippet-snippets'
+  " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  " Plug 'Shougo/neosnippet.vim'
+  " Plug 'Shougo/neosnippet-snippets'
   Plug 'vim-ruby/vim-ruby'
     let ruby_operators = 1
   Plug 'lifepillar/pgsql.vim'
@@ -151,7 +155,7 @@ call plug#begin()
   Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
   Plug 'mxw/vim-jsx', { 'for': 'javascript' }
     let g:jsx_ext_required = 0
-  Plug 'nathanaelkane/vim-indent-guides'
+  " Plug 'nathanaelkane/vim-indent-guides'
     let g:indent_guides_enable_on_vim_startup = 1
     let g:indent_guides_guide_size = 1
     let g:indent_guides_exclude_filetypes = ['help']
@@ -219,6 +223,9 @@ let g:gruvbox_bold = 1
 let g:gruvbox_terminal_colors = 1
 let g:gruvbox_improved_strings = 0
 let g:airline_theme='gruvbox'
+
+" colorscheme nofrils-dark
+" let g:airline_theme='tender'
 
 " colorscheme tender
 " let g:airline_theme='tender'
@@ -348,11 +355,11 @@ nnoremap <leader>l mQviwu`Q
 nnoremap <F3> ggVGg?
 
 " Close Buffer
-noremap <leader>bq :bw<CR>
-noremap <leader>Q :bw!<CR>
+" noremap <leader>bq :bw<CR>
+" noremap <leader>Q :bw!<CR>
 
 " Close Buffer without closing split
-nnoremap <leader>q :bp <BAR> bw #<CR>
+" nnoremap <leader>q :bp <BAR> bw #<CR>
 
 " Buffers list:
 " Vim default
@@ -388,7 +395,10 @@ nnoremap N Nzz
 nmap <silent> // :nohlsearch<CR>
 
 " Toggle folds by Space
-nnoremap <space> zA
+" nnoremap <space> zA
+
+" Unfuck screen
+nnoremap <leader>un :syntax sync fromstart<cr>:redraw!<cr>
 
 " }}}
 " Autogroups and functions {{{
@@ -437,6 +447,42 @@ function! DisableRubocopMetrics()
   silent execute 'normal $a # rubocop:disable ' . command . '^'
 endfunction
 
+map <leader>q :call BufClose()<CR>
+
+function! BufClose()
+  let bufcount = len(getbufinfo({'buflisted':1}))
+  let text = bufcount ==# 1 ? execute('enew') : execute('bp')
+  silent execute 'bw #'
+endfunction
+
+map <leader>tr :call Translate()<CR>
+
+function! Translate()
+  call inputsave()
+  let word = input('Enter word:')
+  call inputrestore()
+  let commnd = 'curl -s -X GET "https://dictionary.skyeng.ru/api/v2/search-word-exact?word=' . word . '"'
+  let json = system(commnd)
+  let parsed_json = JSON_parse(json)
+  let means = []
+  for meaning in parsed_json.meanings
+    call add(means, meaning.translation)
+  endfor
+  echo join(means, ', ')
+endfunction
+
+function! JSON_parse(string)
+  let [null, false, true] = ['', 0, 1]
+  let stripped = substitute(a:string,'\C"\(\\.\|[^"\\]\)*"','','g')
+  if stripped !~# "[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \n\r\t]"
+    try
+      return eval(substitute(a:string,"[\r\n]"," ",'g'))
+    catch
+    endtry
+  endif
+  call s:throw("invalid JSON: ".stripped)
+endfunction
+
 map <leader>d :call DeleteHiddenBuffers()<CR>
 
 function! DeleteHiddenBuffers()
@@ -470,8 +516,8 @@ augroup MyAutoCmd
   autocmd!
   autocmd CursorHold *? syntax sync minlines=300
 
-  autocmd TermOpen * :IndentGuidesDisable " Disable indent guides in neovim terminal
-  autocmd BufLeave term://* :IndentGuidesEnable " Disable indent guides in neovim terminal
+  " autocmd TermOpen * :IndentGuidesDisable " Disable indent guides in neovim terminal
+  " autocmd BufLeave term://* :IndentGuidesEnable " Disable indent guides in neovim terminal
 augroup END
 
 " augroup vimrc

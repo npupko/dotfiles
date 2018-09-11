@@ -155,7 +155,7 @@ call plug#begin()
   Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
   Plug 'mxw/vim-jsx', { 'for': 'javascript' }
     let g:jsx_ext_required = 0
-  " Plug 'nathanaelkane/vim-indent-guides'
+  Plug 'nathanaelkane/vim-indent-guides'
     let g:indent_guides_enable_on_vim_startup = 1
     let g:indent_guides_guide_size = 1
     let g:indent_guides_exclude_filetypes = ['help']
@@ -216,12 +216,16 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set t_Co=256
 set background=dark
 
-colorscheme gruvbox
 let g:gruvbox_contrast_dark = 'medium'
 let g:gruvbox_italic = 1
 let g:gruvbox_bold = 1
+let g:gruvbox_underline = 1
 let g:gruvbox_terminal_colors = 1
 let g:gruvbox_improved_strings = 0
+let g:gruvbox_italicize_strings = 0
+let g:gruvbox_invert_selection = 1
+let g:gruvbox_improved_warnings = 0
+colorscheme gruvbox
 let g:airline_theme='gruvbox'
 
 " colorscheme nofrils-dark

@@ -123,13 +123,13 @@ set wildignore+=*.png,*.jpg,*.gif
 " }}}
 " PluginsList {{{
 call plug#begin()
+  " Plug 'majutsushi/tagbar'
   Plug 'robertmeta/nofrils'
     let g:nofrils_heavylinenumbers = 1
   Plug 'pearofducks/ansible-vim'
     let g:ansible_unindent_after_newline = 1
-  Plug 'rizzatti/dash.vim'
+  " Plug 'rizzatti/dash.vim'
   " Plug 'sheerun/vim-polyglot'
-  " Plug 'junegunn/vim-peekaboo' " Show register content on \", @ and <c-r>
   Plug 'pearofducks/ansible-vim'
   Plug 'jacoborus/tender.vim'
   Plug 'janko-m/vim-test', { 'on':  ['TestFile', 'TestNearest', 'TestSuite', 'TestLast', 'TestVisit'] }
@@ -402,7 +402,14 @@ nmap <silent> // :nohlsearch<CR>
 " nnoremap <space> zA
 
 " Unfuck screen
-nnoremap <leader>un :syntax sync fromstart<cr>:redraw!<cr>
+nnoremap <leader>un :syntax sync fromstart<CR>:redraw!<CR>
+
+" Convert each name_like_this to NameLikeThis in current line.
+nnoremap <leader>tcc :.s/_\([a-z]\)/\u\1/g<CR>
+
+
+" Convert each name_like_this to nameLikeThis in current line.
+nnoremap <leader>tus :.s#_\(\l\)#\u\1#g<CR>
 
 " }}}
 " Autogroups and functions {{{
@@ -497,6 +504,15 @@ function! DeleteHiddenBuffers()
   endfor
 endfunction
 
+map <leader>cle :call CopyLinterError()<CR>
+
+function! CopyLinterError()
+  redir @+
+  1message
+  redir END
+
+endfunction
+
 map <leader>/ :call AddPry()<CR>
 
 function! AddPry()
@@ -518,10 +534,10 @@ nmap <silent> <leader>j <Plug>(ale_next_wrap)
 " Set augroup
 augroup MyAutoCmd
   autocmd!
-  autocmd CursorHold *? syntax sync minlines=300
+  " autocmd CursorHold *? syntax sync minlines=300
 
-  " autocmd TermOpen * :IndentGuidesDisable " Disable indent guides in neovim terminal
-  " autocmd BufLeave term://* :IndentGuidesEnable " Disable indent guides in neovim terminal
+  autocmd TermOpen * :IndentGuidesDisable " Disable indent guides in neovim terminal
+  autocmd BufLeave term://* :IndentGuidesEnable " Disable indent guides in neovim terminal
 augroup END
 
 " augroup vimrc

@@ -20,3 +20,4 @@ dump.rdb
 .env
 .env.*
 .DS_Store
+/deploy

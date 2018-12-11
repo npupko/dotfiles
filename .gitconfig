@@ -42,6 +42,7 @@
   # email = nikita.pupko@asoft.co
   name = Nikita Pupko
   email = "lazynick7@gmail.com"
+  signingkey = 9FB3AA55780A4934
 [core]
   autocrlf = false
   safecrlf = true
@@ -50,3 +51,5 @@
   excludesfile = /Users/random/.gitignore
 [mergetool]
   path = nvim
+[commit]
+  gpgsign = true

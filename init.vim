@@ -123,6 +123,8 @@ set wildignore+=*.png,*.jpg,*.gif
 " }}}
 " PluginsList {{{
 call plug#begin()
+  Plug 'andymass/vim-matchup'
+  Plug 'markonm/traces.vim'
   " Plug 'majutsushi/tagbar'
   Plug 'robertmeta/nofrils'
     let g:nofrils_heavylinenumbers = 1
@@ -165,7 +167,7 @@ call plug#begin()
   " Plug 'vim-scripts/matchit.zip', { 'for': 'html' }                 " % moves for HTML
 
   " Try new
-  Plug 'jiangmiao/auto-pairs'
+  " Plug 'jiangmiao/auto-pairs'
   " Plug 'Raimondi/delimitMate'                                       " Autoclosing quotes, parenthesis, brackets, etc
     " let delimitMate_expand_cr = 1
   Plug 'scrooloose/nerdtree', { 'on':  ['NERDTreeToggle', 'NERDTreeFind'] }           " File tree

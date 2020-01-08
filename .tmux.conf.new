@@ -13,9 +13,19 @@ setw -q -g utf8 on
 # tmux display things in 256 colors
 # set -g default-terminal "screen-256color-italic"
 set -g default-terminal "screen-256color"
-# set -g default-terminal "tmux-255color-italic"
+# set -g default-terminal "xterm-24bit"
+# set -g default-terminal "tmux-256color-italic"
 # enable terminal compability
 set-option -sa terminal-overrides ",xterm*:Tc"
+
+# set -g default-terminal "screen-256color"
+# set-option -ga terminal-overrides ",screen-256color:Tc"
+
+# Add truecolor support
+# set-option -ga terminal-overrides ",screen-256color:Tc"
+# Default terminal is 256 colors
+# set -g default-terminal "screen-256color"
+
 
 set -g base-index 1
 setw -g pane-base-index 1
@@ -27,7 +37,8 @@ set-option -g mouse on
 bind r source-file ~/.tmux.conf \; display-message "Config reloaded..."
 
 # Autorenaming windows
-set-option -g allow-rename off
+set-option -g allow-rename off 
+set-window-option -g automatic-rename off
 
 # Activity monitoring
 setw -g monitor-activity off
@@ -39,9 +50,6 @@ setw -g mode-keys vi
 
 # Copy mode with C-b
 bind C-b copy-mode -u
-
-# auto window rename
-set-window-option -g automatic-rename
 
 # from powerline
 run-shell "tmux set-environment -g TMUX_VERSION_MAJOR $(tmux -V | cut -d' ' -f2 | cut -d'.' -f1 | sed 's/[^0-9]*//g')"
@@ -57,16 +65,18 @@ if-shell '\( #{$TMUX_VERSION_MAJOR} -eq 2 -a #{$TMUX_VERSION_MINOR} -lt 1\) -o #
 set -g status "on"
 set -g status-justify "left"
 set -g status-left-length "100"
+
 set -g status-right-length "100"
-set -g status-right-style none
+set -g status-right-style "none"
+
 # set -g status-utf8 "on"
-set -g status-left-style none
+set -g status-left "none"
 set -g pane-active-border-style fg="colour248"
 set -g pane-border-style fg="colour238"
-set -g status-style bg="colour237",none
-set -g message-command-style fg="colour237",bg="colour248"
-setw -g window-status-style fg="colour237",bg="colour214",none
-setw -g window-status-activity-style bg="colour237",fg="colour248",none
+set -g message-command-style fg="colour237", bg="colour248"
+setw -g window-status-style fg="colour237", bg="colour214", "none"
+
+setw -g window-status-activity-style bg="colour237", fg="colour248", "none"
 setw -g window-status-separator ""
 
 #{?window_zoomed_flag,#[fg=colour1],}
@@ -82,10 +92,9 @@ set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-sensible'
 set -g @plugin 'tmux-plugins/tmux-pain-control'
 set -g @plugin 'tmux-plugins/tmux-yank'
-set -g @plugin 'arcticicestudio/nord-tmux'
 # set -g @plugin 'christoomey/vim-tmux-navigator'
 
-set -g message-style fg='#d65d0e',bg=black,bright
+set -g message-style fg='#d65d0e', bg=black, bright
 
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
 run '~/.tmux/plugins/tpm/tpm'

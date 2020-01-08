@@ -21,3 +21,5 @@ dump.rdb
 .env.*
 .DS_Store
 /deploy
+k8s_keys/
+.nvmrc

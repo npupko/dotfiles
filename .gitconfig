@@ -41,8 +41,8 @@
   # name = Nikita Pupko
   # email = nikita.pupko@asoft.co
   name = Nikita Pupko
-  email = "lazynick7@gmail.com"
-  signingkey = 9FB3AA55780A4934
+  email = work.pupko@gmail.com
+  signingkey = C783E3A0874EBB21
 [core]
   autocrlf = false
   safecrlf = true
@@ -53,3 +53,10 @@
   path = nvim
 [commit]
   gpgsign = true
+[gpg]
+  program = /usr/local/bin/gpg
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

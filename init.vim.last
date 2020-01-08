@@ -11,7 +11,6 @@ set nocursorline
 set nocursorcolumn
 set number
 set confirm
-set nohidden
 set showcmd
 set encoding=UTF-8
 set clipboard=unnamed
@@ -51,21 +50,12 @@ let mapleader = ","
 lang en_US.UTF-8
 
 call plug#begin()
-  Plug 'pangloss/vim-javascript'
-    let g:javascript_plugin_flow = 1
-  Plug 'arcticicestudio/nord-vim'
-  " Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  Plug 'editorconfig/editorconfig-vim'
-    let g:EditorConfig_exclude_patterns = ['fugitive://.\*']
-  Plug 'liuchengxu/vim-clap'
-  Plug 'benmills/vimux'
   Plug 'nathanaelkane/vim-indent-guides'
     let g:indent_guides_enable_on_vim_startup = 1
     let g:indent_guides_guide_size = 1
     let g:indent_guides_exclude_filetypes = ['help', 'defx']
   Plug 'AndrewRadev/splitjoin.vim'
   Plug 'sheerun/vim-polyglot'
-  Plug 'tpope/vim-vinegar'
   Plug 'scrooloose/nerdtree', { 'on':  ['NERDTreeToggle', 'NERDTreeFind'] }
     let g:NERDTreeNodeDelimiter = "\u00a0"
     map <leader><leader> :NERDTreeToggle<CR>
@@ -79,7 +69,6 @@ call plug#begin()
     let g:airline#extensions#tmuxline#enabled = 0
     let g:airline#extensions#wordcount#enabled = 0
     let g:airline#extensions#keymap#enabled = 0
-    let g:airline#extensions#coc#enabled = 1
     let g:airline#extensions#ale#enabled = 1
     " Tabline
     let g:airline#extensions#tabline#enabled = 1
@@ -88,7 +77,6 @@ call plug#begin()
     let g:airline#extensions#tabline#show_buffers = 0
     let g:airline#extensions#tabline#tab_min_count = 2
   Plug 'vim-airline/vim-airline-themes'
-  " Plug 'liuchengxu/vim-clap'
   Plug '/usr/local/opt/fzf'
   Plug 'junegunn/fzf.vim'
     let g:fzf_action = {
@@ -98,39 +86,30 @@ call plug#begin()
      nnoremap <c-P> :Files<CR>
      nnoremap <c-\> :Buffers<CR>
   Plug 'tpope/vim-rails'
+  Plug 'tpope/vim-haml', { 'for': 'haml' }
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-commentary'
   Plug 'tpope/vim-repeat'
   Plug 'tpope/vim-fugitive'
   Plug 'tpope/vim-endwise'
   Plug 'tpope/vim-unimpaired'
-  " Plug 'tpope/vim-haml', { 'for': 'haml' }
-  " Plug 'tpope/vim-markdown', { 'for': 'markdown' }
-  " Plug 'tpope/vim-ragtag'
+  Plug 'tpope/vim-markdown', { 'for': 'markdown' }
+  Plug 'tpope/vim-ragtag'
   Plug 'morhetz/gruvbox'
   Plug 'janko-m/vim-test', { 'on':  ['TestFile', 'TestNearest', 'TestSuite', 'TestLast', 'TestVisit'] }
-    let test#neovim#term_position = "tab"
-    " let test#strategy = "neovim"
-    let test#strategy = "vimux"
+  let test#neovim#term_position = "tab"
+    let test#strategy = "neovim"
     nmap <silent> <leader>tn :TestNearest<CR>
     nmap <silent> <leader>tf :TestFile<CR>
     nmap <silent> <leader>ts :TestSuite<CR>
     nmap <silent> <leader>tl :TestLast<CR>
     nmap <silent> <leader>tg :TestVisit<CR>
   Plug 'mattn/emmet-vim', { 'for': ['html', 'svelte', 'css', 'sass', 'scss'] }
-  " Plug 'huyvohcmc/atlas.vim'
+  Plug 'huyvohcmc/atlas.vim'
   Plug 'dense-analysis/ale'
     let g:ale_ruby_rubocop_executable = 'bundle'
     let g:ale_completion_enabled = 0
-    " let g:ale_lint_on_text_changed = 'never'
-  Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
-  " Plug 'joker1007/vim-ruby-heredoc-syntax'
-  " let g:ruby_heredoc_syntax_filetypes = {
-  "       \ "graphql" : {
-  "       \   "start" : ["GRAPHQL"],
-  "       \},
-  " \}
-  Plug 'flowtype/vim-flow'
+    let g:ale_lint_on_text_changed = 'never'
 call plug#end()
 
 set termguicolors
@@ -142,10 +121,9 @@ set background=dark
 " colorscheme phoenix
 " PhoenixRedEighties
 
-" colorscheme gruvbox
-" let g:airline_theme='tomorrow'
-
-colorscheme nord
+colorscheme gruvbox
+let g:airline_theme='tomorrow'
+" let g:airline_theme='gruvbox'
 " syntax off
 
 " set showfulltag
@@ -211,34 +189,6 @@ function! CopyLinterError()
   redir END
 endfunction
 
-map <leader>tr :call Translate()<CR>
-
-function! Translate()
-  call inputsave()
-  let word = input('Enter word:')
-  call inputrestore()
-  let commnd = 'curl -s -X GET "https://dictionary.skyeng.ru/api/v2/search-word-exact?word=' . word . '"'
-  let json = system(commnd)
-  let parsed_json = JSON_parse(json)
-  let means = []
-  for meaning in parsed_json.meanings
-    call add(means, meaning.translation)
-  endfor
-  echo join(means, ', ')
-endfunction
-
-function! JSON_parse(string)
-  let [null, false, true] = ['', 0, 1]
-  let stripped = substitute(a:string,'\C"\(\\.\|[^"\\]\)*"','','g')
-  if stripped !~# "[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \n\r\t]"
-    try
-      return eval(substitute(a:string,"[\r\n]"," ",'g'))
-    catch
-    endtry
-  endif
-  call s:throw("invalid JSON: ".stripped)
-endfunction
-
 map <leader>/ :call AddPry()<CR>
 
 function! AddPry()
@@ -291,44 +241,12 @@ vnoremap Q :norm @q<cr>
 
 vnoremap <leader>ch :s/\v:(\w+)\=\>/\1: /g<CR>:nohlsearch<CR>0
 nnoremap <leader>ch :.s/\v:(\w+)\=\>/\1: /g<CR>:nohlsearch<CR>0
-nnoremap <leader>amc mlggI<CR><esc>kA# frozen_string_literal: true<CR><esc>0D'l
 
 if has('nvim')
   tmap <C-o> <C-\><C-n>
 end
 
 vnoremap // y/<C-R>"<CR>
-
-let g:netrw_liststyle = 3
 " }}}
-"
-inoremap <C-c> <Esc><Esc>
-
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-nnoremap <leader>cf :CocFix<CR>
-nnoremap <leader>cf :CocFix<CR>
-nnoremap <leader>caf :CocFix<CR><CR>
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-" Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " vim:foldmethod=marker:
